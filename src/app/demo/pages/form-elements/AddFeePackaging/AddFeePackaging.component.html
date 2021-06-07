@@ -1,0 +1,182 @@
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <ng-container><h5 class="m-b-10">Fee</h5></ng-container>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/dashboard/analytics/']" ><i class="feather icon-home"></i></a>
+           </li> 
+           <li class="breadcrumb-item"><a [routerLink]="['/forms/basic/']">Fee</a></li>
+           <li class="breadcrumb-item"><a [routerLink]="['/forms/Feepackaging/']">Fee Packaging</a></li>
+           <li class="breadcrumb-item"><a [routerLink]="['/forms/AddFeePackaging/']">Add Fee Packaging</a></li>
+        </ul>
+      </div> 
+    </div>
+  </div>
+</div>
+<form  id="quick" (ngSubmit)="updateFeeTerms()" novalidate>
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class level</label>
+        <select (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+          <option value="-1" [selected]="selected" disabled>--Select--</option>
+          <option value="1">Junior</option>
+          <option value="2">Senior</option>
+        </select>  
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class</label>
+        <select (change)='onOptionsSelected($event)' class="form-control" id="exampleFormControlSelect1"> 
+          <option disabled selected>--Select--</option>
+            <option *ngFor="let items of allClasses" [ngValue]="items">{{items.classes}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class Section</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option [selected]="selected">--Select--</option>
+          <option *ngFor="let items of sections">{{items}}</option>
+        </select>
+        <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+      </div>
+    </div>
+    
+   
+    <div class="col-lg-2">
+        <br>
+      <div class="form-group"> 
+        <button style="margin-top: 8px;" (click)="GetFeeTypes()" class="btn btn-danger" type="button"><i class="fa fa-search"></i> Get</button>
+      </div>
+    </div>
+  
+  </div> 
+  
+  <form #studentForm="ngForm"  (ngSubmit)="updateFeeTerms()">
+
+ 
+  <hr> 
+  <div *ngIf="showData==true" class="col-md-12">   
+     <table class="table   m-b-0">
+       <thead>
+         <tr>  
+           <th>
+             <span>Fee Type
+               <a class="help"><i class="fa fa-sort-numeric-up"></i></a>
+             </span>
+           </th>
+           <th>
+             <span>Fee Amount
+               <a class="help"><i class="fa fa-cash"></i></a>
+             </span>
+           </th> 
+           <th>
+             <span>Term-1
+               <a class="help"><i class="fab fa-cuttlefish"></i></a>
+             </span>
+           </th> 
+           <th>
+            <span>Term-2
+              <a class="help"><i class="fab fa-cuttlefish"></i></a>
+            </span>
+          </th> 
+          
+         </tr>
+       </thead>
+       <tbody>
+           <div *ngIf="FeeTypes.length==0" class="d-flex justify-content-start center">
+               <div class="text text-center" role="status">
+                <b>No Result Found</b>
+               </div>
+             </div>
+     <tr *ngFor="let item of FeeTypes; let i=index;"> 
+         <td><input class="form-control" type="text" disabled="disabled"
+           name={{i}} [value]="item.FeeType">
+        </td> 
+          <td><input class="form-control" type="number" disabled="disabled" [value]="item.FeeAmt" #val></td>
+         <td><input class="form-control" [(ngModel)]="item.Term1"  type="number" [name]="item.Term1"   [ngClass]="{ 'is-invalid': studentForm.submitted && term1.invalid }" required   #term1="ngModel"></td>
+         <td><input class="form-control" [(ngModel)]="item.Term12"  type="number" [name]="item.Term12"   [ngClass]="{ 'is-invalid': studentForm.submitted && term2.invalid }" required  #term2="ngModel"></td>
+    
+        </tr>
+       </tbody>
+     </table> 
+  </div>
+  
+  <br>
+  <hr>
+  <div *ngIf="showData==true" class="container">
+    <div class="row">
+  <div class="col-lg-5">
+  
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Term-1</label>
+      <input name="FeeTypes[0].Term1From"
+      [bsConfig]="bsConfig"
+      bsDatepicker  
+      [value]="FeeTypes[0].Term1From"
+       type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="From date">
+      <small id="emailHelp" class="invalid-feedback">Please select Term-1 date</small>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Term-2</label>
+      <input  [name]="FeeTypes[0].Term2From" [bsConfig]="bsConfig"
+      bsDatepicker
+       type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="From date">
+      <small id="emailHelp" class="invalid-feedback">Please select Term-2 date</small>
+    </div>
+  </div>
+   
+    </div>
+  </div>
+  
+  <div *ngIf="showData==true" class="container">
+    <div class="row">
+  <div class="col-lg-5">
+  
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">To</label>
+      <input  [name]="FeeTypes[0].Term1To" 
+      [bsConfig]="bsConfig"
+      bsDatepicker
+       type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="To date">
+      <small id="emailHelp" class="invalid-feedback">Please select Term-1 date</small>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group"> 
+      <label for="exampleInputEmail1">To</label>
+      <input [name]="FeeTypes[0].Term2To" 
+      [bsConfig]="bsConfig"
+      bsDatepicker
+       type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="To date">
+      <small id="emailHelp" class="invalid-feedback">Please select Term-2 date</small>
+    </div>
+  </div>
+   
+    </div>
+  
+    <div class="row">
+  <div class="col-lg-9">
+  
+  </div>
+  <div class="col-lg-2">
+  <button  type="submit" style="margin-left: 70px;" class="btn btn-success">Manage</button>
+  </div>
+    </div>
+  </div>
+</form>
+
+

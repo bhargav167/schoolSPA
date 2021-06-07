@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\demo",
+    "\\src\\app\\demo\\ui-elements",
+    "\\src\\app\\demo\\ui-elements\\ui-basic",
+    "\\src\\app\\demo\\ui-elements\\ui-basic\\basic-stu-edit"
+  ],
+  "SelectedNode": "\\src\\app\\app.module.ts",
+  "PreviewInSolutionExplorer": false
+}

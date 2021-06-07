@@ -1,0 +1,340 @@
+ 
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <ng-container><h5 class="m-b-10">Fee</h5></ng-container>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/dashboard/analytics/']" ><i class="feather icon-home"></i></a>
+           </li> 
+           <li class="breadcrumb-item"><a [routerLink]="['/forms/basic/']">Fee</a></li>
+             <li class="breadcrumb-item"><a [routerLink]="['/forms/Feeparticular/']">Fee Particular</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Class level</label>
+          <select (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+            <option value="-1" [selected]="selected" disabled>--Select--</option>
+            <option value="1">Junior</option>
+            <option value="2">Senior</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Class</label>
+          <select (change)='onOptionsSelected($event)' class="form-control" id="exampleFormControlSelect1"> 
+            <option selected disabled>--Select--</option>
+              <option *ngFor="let items of allClasses" [ngValue]="items">{{items.classes}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Class Section</label>
+          <select class="form-control" id="exampleFormControlSelect1">
+            <option [selected]="selected">--Select--</option>
+            <option *ngFor="let items of sections">{{items}}</option>
+          </select>
+          <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <br>
+        <button type="button" (click)="GetFeeTypes()" style="margin-top: 8px;" class="btn btn-info"><i class="fa fa-search"></i> Search</button>&nbsp;
+        <button type="button" style="margin-top: 8px;" 
+        class="btn btn-primary"
+        data-toggle="modal" data-target="#myModal"
+        ><i class="fa fa-plus"></i> Add New</button>
+      </div>
+</div>
+  <hr> 
+   <div class="col-md-12">   
+      <table   class="table table-hover m-b-0">
+        <thead>
+          <tr>  
+            <th>
+              <span>Fee Type
+                <a class="help"><i class="fa fa-sort-numeric-up"></i></a>
+              </span>
+            </th>
+            <th>
+              <span>Fee Amount
+                <a class="help"><i class="fa fa-cash"></i></a>
+              </span>
+            </th> 
+            <th>
+              <span>Action
+                <a class="help"><i class="fab fa-cuttlefish"></i></a>
+              </span>
+            </th> 
+          </tr>
+        </thead>
+        <tbody>
+            <div *ngIf="FeeTypes?.length==0" class="d-flex justify-content-start center">
+                <div class="text text-center" role="status">
+                 <b>No Result Found</b>
+                </div>
+              </div>
+      <tr *ngFor="let item of FeeTypes"> 
+          <td>{{item.FeeType}}</td>
+          <td>{{item.FeeAmt}}</td> 
+        <td>
+          <button (click)="GetEdit(item.Id)"  data-toggle="modal" data-target="#myModal1" class="btn btn-info">Edit</button>
+        </td>
+      </tr>
+        </tbody>
+      </table>
+     
+</div>
+
+<!-- Create FeeParticular -->
+
+<form [formGroup]="FeeParticular" (ngSubmit)="saveFee()">
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Add Fee Particular</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class level</label>
+                <select formControlName="classLevel" (change)="LevelChange($event)" class="form-control"
+                  id="exampleFormControlSelect1">
+                  <option value="-1" [selected]="selected" disabled>--Select--</option>
+                  <option value="1">Junior</option>
+                  <option value="2">Senior</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class</label>
+                <select formControlName="Stander" 
+                (change)='onOptionsSelected($event)'
+                  [ngClass]="{'is-invalid': FeeParticular.get('Stander').errors && FeeParticular.get('Stander').touched}"
+                  class="form-control" id="exampleFormControlSelect1">
+                  <option *ngFor="let items of allClasses">{{items.classes}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class Section</label>
+                <select formControlName="Section"
+                  [ngClass]="{'is-invalid': FeeParticular.get('Section').errors && FeeParticular.get('Section').touched}"
+                  class="form-control" id="exampleFormControlSelect1">
+                  <option [selected]="selected">--Select--</option>
+                  <option *ngFor="let items of sections">{{items}}</option>
+                </select>
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Fee Type</label>
+                <input formControlName="feeType"
+                  [ngClass]="{'is-invalid': FeeParticular.get('feeType').errors && FeeParticular.get('feeType').touched}"
+                  type="text" class="form-control" placeholder="Fee type.. i.e Sport fee">
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Fee Amount</label>
+                <input formControlName="feeAmt"
+                  [ngClass]="{'is-invalid': FeeParticular.get('feeAmt').errors && FeeParticular.get('feeAmt').touched}"
+                  type="number" class="form-control" placeholder="Fee Amount.. i.e 2000">
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button data-toggle="modal" data-target="#myModal" data-backdrop="false" class="btn btn-primary event-btn m-2" type="submit" [disabled]="!FeeParticular.valid">
+            <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+            <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+            <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-save"></i> Save</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<!-- Edit FeeParticular -->
+
+<form  *ngIf="EditData" #FeeForm="ngForm" (ngSubmit)="FeeForm.form.valid && UpdateFee()">
+  <div class="modal" id="myModal1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Fee Particular</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class level</label>
+                <select [(ngModel)]="EditData.ClassLevel" name="classLevel"  (change)="LevelChange($event)" class="form-control"
+                  id="exampleFormControlSelect1">
+                  <option value="-1" [selected]="selected" disabled>--Select--</option>
+                  <option value="1">Junior</option>
+                  <option value="2">Senior</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class</label>
+                <select [(ngModel)]="EditData.Stander" name="stander"
+                  [ngClass]="{'is-invalid': FeeParticular.get('Stander').errors && FeeParticular.get('Stander').touched}"
+                  class="form-control" id="exampleFormControlSelect1">
+                  <option *ngFor="let items of allClasses">{{items.classes}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class Section</label>
+                <select [(ngModel)]="EditData.Section" name="section"
+                  [ngClass]="{'is-invalid': FeeParticular.get('Section').errors && FeeParticular.get('Section').touched}"
+                  class="form-control" id="exampleFormControlSelect1">
+                  <option [selected]="selected" disabled>--Select--</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                </select>
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Fee Type</label>
+                <input [(ngModel)]="EditData.FeeType" name="feeType"
+                  [ngClass]="{'is-invalid': FeeParticular.get('feeType').errors && FeeParticular.get('feeType').touched}"
+                  type="text" class="form-control" placeholder="Fee type.. i.e Sport fee">
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Fee Amount</label>
+                <input [(ngModel)]="EditData.FeeAmt" name="feeAmt"
+                  [ngClass]="{'is-invalid': FeeParticular.get('feeAmt').errors && FeeParticular.get('feeAmt').touched}"
+                  type="number" class="form-control" placeholder="Fee Amount.. i.e 2000">
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+
+            </div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button data-toggle="modal" data-target="#myModal1" data-backdrop="false" class="btn btn-primary event-btn m-2" type="submit">
+            <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+            <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+            <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-save"></i> Save</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>

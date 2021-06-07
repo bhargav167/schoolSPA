@@ -1,0 +1,133 @@
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <ng-container>
+            <h5 class="m-b-10">Class TimeTable
+            </h5>
+          </ng-container>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="box box-warning"> 
+        <div class="box-body"> 
+          <div class="table-responsive">
+            <table class="table table-stripped">
+              <thead>
+                <tr>
+                  <th class="text text-center">Monday</th>
+                  <th class="text text-center">Tuesday</th>
+                  <th class="text text-center">Wednesday</th>
+                  <th class="text text-center">Thursday</th>
+                  <th class="text text-center">Friday</th>
+                  <th class="text text-center">Saturday</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text text-center" width="22%">
+
+                    <div *ngFor="let item of monTimeTbl" class="attachment-block clearfix">
+
+                      <b class="text-green">Subject: {{item.subjects.Subject}} ({{item.subjects.Id}})
+                      </b><br>
+
+                      <strong class="text-green">{{item.timeTo}}</strong>
+                      <b class="text text-center">-</b>
+                      <strong class="text-green">{{item.timefrom}}</strong><br>
+                      <strong class="text-green">Teacher: {{item.teachers.firstName}} {{item.teachers.lastName}}</strong><br>
+                      <strong class="text-green">Room Number: {{item.RoomNo}}</strong><br>
+
+                    </div>
+                    
+                  </td>
+                  <td class="text text-center" width="22%">
+                     <div *ngFor="let item of tueTimeTbl" class="attachment-block clearfix">
+
+                      <b class="text-green">Subject: {{item.subjects.Subject}} ({{item.subjects.Id}})
+                      </b><br>
+
+                       <strong class="text-green">{{item.timeTo}}</strong>
+                       <b class="text text-center">-</b>
+                       <strong class="text-green">{{item.timefrom}}</strong><br>
+                       <strong class="text-green">Teacher: {{item.teachers.firstName}} {{item.teachers.lastName}}</strong><br>
+                       <strong class="text-green">Room Number: {{item.RoomNo}}</strong><br>
+
+                     </div>
+                  </td>
+                  <td class="text text-center" width="22%">
+
+                  <div *ngFor="let item of wedTimeTbl" class="attachment-block clearfix">
+
+                    <b class="text-green">Subject: {{item.subjects.Subject}} ({{item.subjects.Id}})
+                    </b><br>
+
+                    <strong class="text-green">{{item.timeTo}}</strong>
+                    <b class="text text-center">-</b>
+                    <strong class="text-green">{{item.timefrom}}</strong><br>
+                    <strong class="text-green">Teacher: {{item.teachers.firstName}} {{item.teachers.lastName}}</strong><br>
+                    <strong class="text-green">Room Number: {{item.RoomNo}}</strong><br>
+
+                  </div>
+                  </td>
+                  <td class="text text-center" width="22%"> 
+                     <div *ngFor="let item of thuTimeTbl" class="attachment-block clearfix">
+
+                      <b class="text-green">Subject: {{item.subjects.Subject}} ({{item.subjects.Id}})
+                      </b><br>
+
+                       <strong class="text-green">{{item.timeTo}}</strong>
+                       <b class="text text-center">-</b>
+                       <strong class="text-green">{{item.timefrom}}</strong><br>
+                       <strong class="text-green">Teacher: {{item.teachers.firstName}} {{item.teachers.lastName}}</strong><br>
+                       <strong class="text-green">Room Number: {{item.RoomNo}}</strong><br>
+
+                     </div>
+                  </td>
+                  <td class="text text-center" width="22%">
+                     <div *ngFor="let item of friTimeTbl" class="attachment-block clearfix">
+                      <b class="text-green">Subject: {{item.subjects.Subject}} ({{item.subjects.Id}})
+                      </b><br>
+
+                       <strong class="text-green">{{item.timeTo}}</strong>
+                       <b class="text text-center">-</b>
+                       <strong class="text-green">{{item.timefrom}}</strong><br>
+                       <strong class="text-green">Teacher: {{item.teachers.firstName}} {{item.teachers.lastName}}</strong><br>
+                       <strong class="text-green">Room Number: {{item.RoomNo}}</strong><br>
+
+                     </div>
+                  </td>
+                  <td class="text text-center" width="22%">
+                     <div *ngFor="let item of satTimeTbl" class="attachment-block clearfix">
+
+                      <b class="text-green">Subject: {{item.subjects.Subject}} ({{item.subjects.Id}})
+                      </b><br>
+
+                       <strong class="text-green">{{item.timeTo}}</strong>
+                       <b class="text text-center">-</b>
+                       <strong class="text-green">{{item.timefrom}}</strong><br>
+                       <strong class="text-green">Teacher: {{item.teachers.firstName}} {{item.teachers.lastName}}</strong><br>
+                       <strong class="text-green">Room Number: {{item.RoomNo}}</strong><br>
+
+                     </div>
+                  </td> 
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

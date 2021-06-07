@@ -1,0 +1,235 @@
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <ng-container><h5 class="m-b-10">Fee</h5></ng-container>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/dashboard/analytics/']" ><i class="feather icon-home"></i></a>
+           </li> 
+           <li class="breadcrumb-item"><a [routerLink]="['/basic/studentlist']">Students</a></li>
+           <li class="breadcrumb-item"><a [routerLink]="['/basic/studentview']">View</a></li>
+         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<body>
+  <div class="container main-secction">
+      <div class="row"> 
+       <br><br><br>
+          <div class="row user-left-part">
+              <div class="col-md-3 col-sm-3 col-xs-12 user-profil-part pull-left">
+                  <div class="row ">
+                      <div class="col-md-12 col-md-12-sm-12 col-xs-12 user-image text-center">
+                          <img src="../../../../../assets/images/user/student.png" [src]="imgURL" class="rounded-circle">
+                      </div>
+                      <div class="col-md-12 col-sm-12 col-xs-12 user-detail-section1 text-center">
+                          <button id="btn-contact" (click)="clearModal()" data-toggle="modal" data-target="#contact" class="btn btn-success btn-block follow">Suspend</button> 
+                          <button class="btn btn-warning btn-block">Collect Fee</button>                               
+                      </div>
+                      <div class="row user-detail-row">
+                          <div class="col-md-12 col-sm-12 user-detail-section2 pull-left">
+                              <div class="border"></div>
+                              <p>FOLLOWER</p>
+                              <span>320</span>
+                          </div>                           
+                      </div>
+                     
+                  </div>
+              </div>
+              <div class="col-md-9 col-sm-9 col-xs-12 pull-right profile-right-section">
+                  <div class="row profile-right-section-row">
+                      <div class="col-md-12 profile-header">
+                          <div class="row">
+                              <div class="col-md-8 col-sm-6 col-xs-6 profile-header-section1 pull-left">
+                             <div class="row">
+                                <div class="col-lg-5 form-inline">
+                                    <h3>{{students.firstName +' '+ students.lastName}}</h3> 
+                                   
+                                </div>
+                                <div class="col-lg-1">
+                                    <p *ngIf="students.isActive==false" style="margin-left: -20px;" class="badge badge-danger">InActive</p> 
+                                    <p *ngIf="students.isActive==true" style="margin-left: -20px;" class="badge badge-success">Active</p> 
+                                </div>
+                                <div class="col-lg-5">
+                                   
+                                </div>
+                             </div>
+                               
+                               
+                              </div>
+                              <div class="col-md-4 col-sm-6 col-xs-6 profile-header-section1 text-right pull-rigth">
+                                  <a href="/search" class="btn btn-primary btn-block">Close Admission</a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="row">
+                              <div class="col-md-8">
+                                      <ul class="nav nav-tabs" role="tablist">
+                                              <li class="nav-item">
+                                                <a class="nav-link active" href="#profile" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>Personal Information</a>
+                                              </li>
+                                              <li class="nav-item">
+                                                <a class="nav-link" href="#buzz" role="tab" data-toggle="tab"><i class="fas fa-info-circle"></i>Other Information</a>
+                                              </li>                                                
+                                            </ul>
+                                            
+                                            <!-- Tab panes -->
+                                            <div class="tab-content">
+                                              <div role="tabpanel" class="tab-pane fade show active" id="profile">
+                                                <br>
+                                                <div class="row">
+                                                  <div class="col-md-2">
+                                                    <label>ID</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.rollNo}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-2">
+                                                    <label>Name</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.firstName +' '+ students.lastName}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-2">
+                                                    <label>Class</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.standers}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-2">
+                                                    <label>Section</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.classsection}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-2">
+                                                    <label>Medium</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.medium}}</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div role="tabpanel" class="tab-pane fade" id="buzz">
+                                                <br>
+                                                <div class="row">
+                                                  <div class="col-md-6">
+                                                    <label>Date Of Admission</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.doa}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-6">
+                                                    <label>Date Of Birth</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.dob}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-6">
+                                                    <label>Father Name</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.fatherName}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-6">
+                                                    <label>Admission Number</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.admissionNo}}</p>
+                                                  </div>
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-6">
+                                                    <label>Nationality</label>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <p>{{students.Nationality}}</p>
+                                                  </div>
+                                                </div>
+                                             
+                                              </div>
+                                              
+                                            </div>
+                        
+                              </div>
+                              <div class="col-md-4 img-main-rightPart">
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <div class="row image-right-part">
+                                              <div class="col-md-6 pull-left image-right-detail">
+                                                  
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <!-- <a href="http://camaradecomerciozn.com/">
+                                          <div class="col-md-12 image-right">
+                                              <img src="http://pluspng.com/img-png/bootstrap-png-bootstrap-512.png">
+                                          </div>
+                                      </a> -->
+                                      <div class="col-md-12 image-right-detail-section2">
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="contact">Contactarme</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group">
+                      <p for="msj">Se enviará este mensaje a la persona que desea contactar, indicando que te quieres comunicar con el. Para esto debes de ingresar tu información personal.</p>
+                  </div>
+                  <div class="form-group">
+                      <label for="txtFullname">Nombre completo</label>
+                      <input type="text" id="txtFullname" class="form-control">
+                  </div>
+                  <div class="form-group">
+                      <label for="txtEmail">Email</label>
+                      <input type="text" id="txtEmail" class="form-control">
+                  </div>
+                  <div class="form-group">
+                      <label for="txtPhone">Teléfono</label>
+                      <input type="text" id="txtPhone" class="form-control">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" (click)="openModal()" data-dismiss="modal">Guardar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</body>

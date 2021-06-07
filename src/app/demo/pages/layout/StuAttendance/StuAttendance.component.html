@@ -1,0 +1,6 @@
+<div *ngIf="showData==true">
+  <br>
+  <ejs-schedule width='75%' height='500px' (eventRendered)="oneventRendered($event)" [selectedDate]="selectedDate"
+    [eventSettings]="eventSettings" [currentView]="currentView" [readonly]="readonly">
+  </ejs-schedule>
+</div>

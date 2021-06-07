@@ -1,0 +1,73 @@
+<div class="auth-wrapper">
+  <div class="auth-content">
+    <div class="card">
+      <div class="row align-items-center text-center">
+        <form [formGroup]="formModel" autocomplete="off" (ngSubmit)="register()">
+          <div class="col-md-12">
+            <div class="card-body">
+              <img src="assets/images/logo-dark.png" alt="" class="img-fluid mb-4">
+              <h4 class="mb-3 f-w-400">Sign up</h4>
+            
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="feather icon-user"></i></span>
+                </div>
+                <input type="text" class="form-control" formControlName="FullName"
+                [ngClass]="{'is-invalid': formModel.get('FullName').errors && formModel.get('FullName').touched}"
+                placeholder="FullName">
+                <small id="emailHelp" *ngIf="formModel.get('FullName').hasError('required') && formModel.get('FullName').touched" class="invalid-feedback">Please enter Full Name</small>
+               </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="feather icon-user"></i></span>
+                </div>
+                <input type="text" class="form-control" formControlName="UserName"
+                [ngClass]="{'is-invalid': formModel.get('UserName').errors && formModel.get('UserName').touched}"
+                placeholder="Username">
+                <small id="emailHelp" *ngIf="formModel.get('UserName').hasError('required') && formModel.get('UserName').touched" class="invalid-feedback">Please enter User Name</small>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="feather icon-mail"></i></span>
+                </div>
+                <input type="email" class="form-control" formControlName="Email"
+                [ngClass]="{'is-invalid': formModel.get('Email').errors && formModel.get('Email').touched}"
+                placeholder="Email address">
+                <small id="emailHelp" *ngIf="formModel.get('Email').hasError('required') && formModel.get('Email').touched" class="invalid-feedback">Please enter Email</small>
+              </div>
+
+            
+                <div class="input-group mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="feather icon-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" formControlName="Password"
+                  [ngClass]="{'is-invalid': formModel.get('Password').errors && formModel.get('Password').touched}"
+                  placeholder="Password">
+                  <small id="emailHelp" *ngIf="formModel.get('Password').hasError('required') && formModel.get('Password').touched" class="invalid-feedback">Please enter Password</small>
+                </div>
+                <div class="input-group mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="feather icon-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" formControlName="ConfirmPassword" 
+                  [ngClass]="{'is-invalid': formModel.get('ConfirmPassword').errors && formModel.get('ConfirmPassword').touched}"
+                  placeholder="Confirm Password">
+                  <small id="emailHelp" *ngIf="formModel.get('ConfirmPassword').hasError('required') && formModel.get('ConfirmPassword').touched" class="invalid-feedback">Please enter Confirm Password</small>
+                </div> 
+              
+              <div class="form-group text-left mt-2">
+                <div class="checkbox checkbox-primary d-inline">
+                  <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2">
+                  <label for="checkbox-fill-2" class="cr">Send me the <a href="javascript:"> Newsletter</a> weekly.</label>
+                </div>
+              </div>
+              <button type="submit" [disabled]="!formModel.valid" class="btn btn-primary btn-block mb-4">Sign up</button>
+              <p class="mb-2">Already have an account? <a [routerLink]="['/auth/signin']" class="f-w-400">Signin</a></p>
+            </div>
+          </div>
+        </form> 
+      </div>
+    </div>
+  </div>
+</div>

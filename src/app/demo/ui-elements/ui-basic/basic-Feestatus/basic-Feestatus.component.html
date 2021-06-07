@@ -1,0 +1,140 @@
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <ng-container>
+            <h5 class="m-b-10">Fee Status
+            </h5>
+          </ng-container>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/dashboard/analytics/']"><i class="feather icon-home"></i></a> </li>
+          <li class="breadcrumb-item"><a [routerLink]="['/basic/studentlist/']">Students</a></li>
+          <li class="breadcrumb-item"><a [routerLink]="['']">Fee Status</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div> 
+
+
+<div class="container">
+  <div class="row">
+<div class="col-lg-3">
+<label class="lable">Admission Number:</label>
+{{feeModule?.quickAdmission?.admissionNo}}
+</div> 
+<div class="col-lg-3">
+  <label class="lable">Student Name:</label>
+  {{feeModule?.quickAdmission.firstName}} {{feeModule?.quickAdmission?.lastName}}
+  </div> 
+  <div class="col-lg-3">
+    <label class="lable">Student RollNo:</label>
+    {{feeModule?.quickAdmission?.rollNo}}
+    </div>
+    
+    <div class="col-lg-3">
+      <label class="lable">Phone Number:</label>
+      {{feeModule?.quickAdmission?.phone}}
+      </div>
+      
+  </div>
+</div>
+<hr>
+<br> 
+  <div class="col-md-12">
+    <app-card cardTitle="Fee Monitor" cardClass="table-card" blockClass="p-0">
+      <perfect-scrollbar [style.max-height]="'362px'">
+        <table class="table table-hover m-b-0">
+          <thead>
+            <tr>
+              <th><span>Fee Type</span></th>
+              <th>
+                <span>Term-1
+                  <a class="help"><i class="feather icon-help-circle f-16"></i></a>
+                </span>
+              </th>
+              <th>
+                <span>Term-2
+                  <a class="help"><i class="feather icon-help-circle f-16"></i></a>
+                </span>
+              </th>
+              <th>
+                <span>Term-1 Paid Amount
+                  <a class="help"><i class="feather icon-help-circle f-16"></i></a>
+                </span>
+              </th>
+              <th>
+                <span>Term-2 Paid Amount
+                  <a class="help"><i class="feather icon-help-circle f-16"></i></a>
+                </span>
+              </th>
+              <th>
+                <span>Term-1 Due Amount
+                  <a class="help"><i class="feather icon-help-circle f-16"></i></a>
+                </span>
+              </th>
+              <th>
+                <span>Term-2 Due Amount
+                  <a class="help"><i class="feather icon-help-circle f-16"></i></a>
+                </span>
+              </th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of feeModule?.feeParticular">
+              <td>{{item.FeeType}}</td>
+              <td class="text text-center">{{item.Term1}}
+                <div class="mt-1">
+                  <ngb-progressbar type="danger" height="4px" [value]="100"></ngb-progressbar>
+                </div>
+              </td>
+              <td class="text text-center">{{item.Term12}}
+                <div class="mt-1">
+                  <ngb-progressbar type="danger" height="4px" [value]="100"></ngb-progressbar>
+                </div>
+              </td>
+              <td class="text text-center">{{item.Term1DueAmt}}
+                <div class="mt-1">
+                  <ngb-progressbar type="success" height="4px" [value]="item.Term1DueAmt / item.Term1*100"></ngb-progressbar>
+                </div>
+              </td>
+              <td class="text text-center">{{item.Term2DueAmt}}
+                <div class="mt-1">
+                  <ngb-progressbar type="success" height="4px" [value]="item.Term2DueAmt / item.Term12*100"></ngb-progressbar>
+                </div>
+              </td>
+              <td class="text text-center">{{item.Term1Paid}}
+                <div class="mt-1">
+                  <ngb-progressbar type="warning" height="4px" [value]="item.Term1Paid / item.Term1*100"></ngb-progressbar>
+                </div>
+              </td>
+              <td class="text text-center">{{item.Term2Paid}}
+                <div class="mt-1">
+                  <ngb-progressbar type="warning" height="4px" [value]="item.Term2Paid / item.Term12*100"></ngb-progressbar>
+                </div>
+              </td>
+      
+            </tr>
+           
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="summary">Fees Summary:</td>
+              <td style="font-weight: bold; color:black;" class="alert alert-danger text text-center">{{Term1Fee}}</td>
+              <td style="font-weight: bold; color:black;" class="alert alert-danger text text-center">{{Term2Fee}}</td>
+              <td style="font-weight: bold; color:black;" class="alert alert-success text text-center">{{Term1FeePaidAmt}}</td>
+              <td style="font-weight: bold; color:black;" class="alert alert-success text text-center">{{Term2FeePaidAmt}}</td>
+              <td style="font-weight: bold; color:black;" class="alert alert-warning text text-center">{{Term1FeeDueAmt}}</td>
+              <td style="font-weight: bold; color:black;" class="alert alert-warning text text-center">{{Term2FeeDueAmt}}</td>
+            </tr>
+         
+          </tfoot>
+        </table>
+      </perfect-scrollbar>
+    </app-card>
+  </div>
+ 

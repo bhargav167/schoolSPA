@@ -1,0 +1,266 @@
+
+<div class="row">
+  <div class="col-lg-2">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class level</label>
+      <select [(ngModel)]="valtoselect" (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+        <option value="-1" >--Select--</option>
+        <option value="1">Junior</option>
+        <option value="2">Senior</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-2">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class</label>
+      <select [(ngModel)]="valtoselect1" (change)='onOptionsSelected($event)' class="form-control" id="exampleFormControlSelect1"> 
+        <option value="-1" [selected]="selected" disabled>--Select--</option>
+          <option *ngFor="let items of allClasses" [value]="items.classes">{{items.classes}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-2">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class Section</label>
+      <select [(ngModel)]="valtoselect2" (change)='onOptionsSelectedSec($event)' class="form-control" id="exampleFormControlSelect1">
+        <option value="-1" [selected]="selected" disabled>--Select--</option>
+        <option [value]="items" *ngFor="let items of sections">{{items}}</option>
+      </select>
+      <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+    </div>
+  </div>
+  <div class="col-lg-2">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Subject</label>
+      <select [(ngModel)]="valtoselect3" (change)='onOptionsSelectedSub($event)' class="form-control" id="exampleFormControlSelect1">
+        <option value="-1" [selected]="selected" disabled>--Select--</option>
+        <option [value]="items" *ngFor="let items of subjects">{{items}}</option>
+      </select>
+      <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <br>
+    <button type="button" (click)=" getAllHomework()"  style="margin-top: 8px;" class="btn btn-info"><i class="fa fa-search"></i> Search</button>&nbsp;
+    <button type="button" style="margin-top: 8px;" 
+    class="btn btn-primary" (click)="Clear()"
+    data-toggle="modal" data-target="#form"
+    ><i class="fa fa-plus"></i> Add New</button>
+  </div>
+</div> 
+
+
+<!-- List of Homework -->
+<div class="row" style="margin-top: 60px;">
+  <div *ngIf="homeworklist.length!=0" class="col-md-12">
+    <h6>Homework List's</h6>
+   
+    <table class="table m-b-0">
+      <thead>
+        <tr>
+          <th>
+            <span>Class
+              
+            </span>
+          </th>
+          <th>
+            <span>Section
+            
+            </span>
+          </th>
+
+          <th>
+            <span>Subject Group
+             
+            </span>
+          </th>
+          <th>
+            <span>Subject
+            </span>
+          </th>
+          <th>
+            <span>Homework Date
+              
+            </span>
+          </th>
+          <th>
+            <span>Submission Date
+              
+            </span>
+          </th>
+          <th>
+            <span>Evaluation Date
+             
+            </span>
+          </th>
+          <th>
+            <span>Created By
+             
+            </span>
+          </th>
+          <th>
+            <span>Action
+              
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of homeworklist">
+          <td>{{item.Classes}}</td>
+          <td>{{item.Section}}</td>
+          <td>{{item.SubGroup}}</td>
+          <td>{{item.Subject}}</td>
+          <td>{{item.HomeworkDate}}</td>
+          <td>{{item.SubmissionDate}}</td>
+          <td>Kshitiz</td>
+          <td>{{item.Classes}}</td>
+          <td>
+            <button (click)="Edit(item.Id)" data-toggle="modal" data-target="#form" class="btn btn-sm btn-warning"><i class="fa fa-edit"
+                aria-hidden="true"></i>
+              Edit
+            </button>&nbsp;
+            <button (click)="Delete(item.Id)" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>
+              Remove
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="homeworklist.length==0" class="col-md-12">
+    <div style="margin-top: 120px;">
+      <h3 class="text text-center text-danger">No record to display.</h3>
+      <p  class="text text-center"><i class="fa fa-search text text-danger"></i> search to display record</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Homework Modal -->
+<div  data-backdrop="static" data-keyboard="false" class="modal fade" id="form" tabindex="0" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form [formGroup]="registerHomework" (ngSubmit)="registerHW()">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content" style="padding: 15px;">
+        <div class="model-header">
+          <button type="button" class="close" data-dismiss="modal" (click)="Clear()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="modal-title">
+            <h4>Add Homework</h4>
+          </div>
+
+          <hr />
+        </div>
+        <div class="model-body">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class level<i style="color: red;">*</i></label>
+                <select formControlName="ClassGroup" (change)="LevelChange($event)" class="form-control"
+                [ngClass]="{'is-invalid': registerHomework.get('ClassGroup').errors && registerHomework.get('ClassGroup').touched}" 
+                id="exampleFormControlSelect1">
+                  <option value="-1" [selected]="selected" disabled>--Select--</option>
+                  <option value="1">Junior</option>
+                  <option value="2">Senior</option>
+                </select>
+                <small id="emailHelp" class="invalid-feedback">Please select class level</small>             
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class<i style="color: red;">*</i></label>
+                <select formControlName="Classes" (change)='onOptionsSelected($event)' class="form-control"
+                [ngClass]="{'is-invalid': registerHomework.get('Classes').errors && registerHomework.get('Classes').touched}" 
+                  id="exampleFormControlSelect1">
+                  <option value="-1" [selected]="selected" disabled>--Select--</option>
+                  <option *ngFor="let items of allClasses">{{items.classes}}</option>
+                </select>
+                <small id="emailHelp" class="invalid-feedback">Please select class</small>     
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Class Section<i style="color: red;">*</i></label>
+                <select formControlName="Section" (change)='onOptionsSelectedSec($event)' class="form-control"
+                [ngClass]="{'is-invalid': registerHomework.get('Section').errors && registerHomework.get('Section').touched}"
+                  id="exampleFormControlSelect1">
+                  <option value="-1" [selected]="selected" disabled>--Select--</option>
+                  <option *ngFor="let items of sections">{{items}}</option>
+                </select>
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Subject<i style="color: red;">*</i></label>
+                <select formControlName="Subject"  
+                [ngClass]="{'is-invalid': registerHomework.get('Subject').errors && registerHomework.get('Subject').touched}"
+                class="form-control" id="exampleFormControlSelect1">
+                  <option value="-1" [selected]="selected" disabled>--Select--</option>
+                  <option *ngFor="let items of subjects">{{items}}</option>
+                </select>
+                <small id="emailHelp" class="invalid-feedback">Please select subject</small>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Homework Date<i style="color: red;">*</i></label>
+                <input formControlName="HomeworkDate" [value]="todaydate" 
+                [ngClass]="{'is-invalid': registerHomework.get('HomeworkDate').errors && registerHomework.get('HomeworkDate').touched}"
+                [bsConfig]="bsConfig" bsDatepicker type="text" class="form-control"
+                  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                  <small id="emailHelp" class="invalid-feedback">Please select homework date</small>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Submission Date<i style="color: red;">*</i></label>
+                <input formControlName="SubmissionDate" [value]="todaydate"
+                [ngClass]="{'is-invalid': registerHomework.get('SubmissionDate').errors && registerHomework.get('SubmissionDate').touched}"
+                [bsConfig]="bsConfig" bsDatepicker type="text" class="form-control"
+                  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                  <small id="emailHelp" class="invalid-feedback">Please select submission date</small>
+
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Attachement Document</label>
+                <input accept="image/*" #file type="file" class="form-control">
+                <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Description<i style="color: red;">*</i></label>
+              <div [ngClass]="{'is-invalid': registerHomework.get('Description').errors && registerHomework.get('Description').touched}" >
+                <ckeditor formControlName="Description"
+                debounce="500">
+              </ckeditor>
+              <small *ngIf=" registerHomework.get('Description').errors && registerHomework.get('Description').touched" id="emailHelp" class="invalid-feedback">Please Enter Description</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary event-btn m-2" type="submit"
+          (click)="uploadFile(file.files)"
+          [disabled]="!registerHomework.valid">
+            <span *ngIf="this.btnLoader"  class="spinner-border spinner-border-sm" role="status"></span>
+            <span *ngIf="this.btnLoader"  class="load-text"> Loading...</span>
+            <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-save"></i> Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+   
+</div>

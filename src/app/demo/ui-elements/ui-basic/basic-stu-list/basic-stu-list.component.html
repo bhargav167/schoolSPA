@@ -1,0 +1,124 @@
+
+  <div class="row">
+    <div class="col-lg-8"> 
+        <form class="form-inline" #form="ngForm" (ngSubmit)="loadUsers()" novalidate>
+            <div class="form-group px-2">
+                <label class="label" for="gender">Gender: </label>
+                <select class="form-control ml-1" style="width: 130px" id="gender"
+                  [(ngModel)]="userParams.Gender" name="Gender"> 
+                  <option [selected]="selected" disabled>--Select--</option>
+                  <option *ngFor="let gender of genderList" [value]="gender.value">
+                    {{gender.display}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                  <label for="minAge">Admission No</label>
+                  <input type="number" class="form-control ml-1" style="width: 85px" id="admi"
+                    [(ngModel)]="userParams.AdmissionNo" name="AdmissionNo">
+                </div>
+
+              <button type="submit" class="btn btn-primary" style="margin-left:10px">Apply Filters</button>
+              <button type="button" class="btn btn-warning" (click)="resetFilters()" style="margin-left:10px">
+                  Reset Filter
+              </button>
+        </form>
+    </div>
+    <div class="col-lg-4"> 
+            <button type="button" class="btn btn-success"
+            btnRadio="OrderBy" value="OrderBy" name="OrderBy" [(ngModel)]="userParams.OrderBy" (click)="loadUsers()">Order by Class</button>
+         &nbsp;
+            <button type="button" class="btn btn-success"
+            btnRadio="OrderBy" value="OrderBy" name="created" [(ngModel)]="userParams.OrderBy" (click)="loadUsers()">Newest Admission</button>    
+          </div> 
+  </div>
+<hr>
+<div class="col-md-12"> 
+    <div *ngIf="isLoading==true" class="d-flex justify-content-start center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <table *ngIf="isLoading==false" class="table table-hover m-b-0">
+        <thead>
+          <tr> 
+            <th>
+              <span>Admission No
+                <a class="help"><i class="fa fa-sort-numeric-up"></i></a>
+              </span>
+            </th>
+            <th>
+              <span>Roll No
+                <a class="help"><i class="fa fa-sort-numeric-up"></i></a>
+              </span>
+            </th>
+            <th>
+              <span>Name
+                <a class="help"><i class="fa fa-user"></i></a>
+              </span>
+            </th> 
+            <th>
+              <span>Class
+                <a class="help"><i class="fab fa-cuttlefish"></i></a>
+              </span>
+            </th>
+            <th>
+               
+                    <span>Section
+                      <a class="help"><i class="fas fa-chalkboard"></i></a>
+                    </span>
+                  </th>
+                  
+                      <th>
+                          <span>Gender
+                            <a class="help"><i class="fa fa-transgender"></i></a>
+                          </span>
+                        </th>
+                        <th>
+                          <span>Action
+                            <a class="help"><i class="fa fa-mouse"></i></a>
+                          </span>
+                        </th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of users">
+          <td>{{item.admissionNo}}</td> 
+          <td>{{item.rollNo}}</td> 
+          <td>{{item.firstName}} {{item.lastName}}</td> 
+          <td>{{item.standers}}</td> 
+          <td>{{item.classsection | uppercase}}</td>  
+          <td *ngIf="item.gender=='male'">Male</td> 
+          <td *ngIf="item.gender=='female'">Female</td> 
+          <td *ngIf="item.gender=='other'">Other</td> 
+          <td> 
+            <div class="btn-group mb-2 mr-2" ngbDropdown [placement]="'bottom-right'">
+              <button type="button" class="btn btn-secondary">Action</button>
+              <button type="button" class="btn btn-secondary dropdown-toggle-split" ngbDropdownToggle><span class="sr-only">Action</span></button>
+              <div ngbDropdownMenu>
+                <a class="dropdown-item"  [routerLink]="['/basic/studentview/',item.UserId]"><i class="fas fa-eye"></i>&nbsp;&nbsp;View</a>
+                <a class="dropdown-item" [routerLink]="['/basic/studentedit/',item.UserId]"><i class="far fa-edit"></i>&nbsp;&nbsp;Edit</a>
+                <a class="dropdown-item" href="javascript:" [routerLink]="['/basic/feeStatus/',item.Id,item.standers,item.classsection]"><i class="fas fa-door-closed"></i>&nbsp;&nbsp;Fee status</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;Delete</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div *ngIf="isLoading==false" class="row">
+        <div class="col-lg-4">
+      
+        </div>
+        <div class="col-lg-4">
+          <pagination class="pagination-sm" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
+            (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
+        </div>
+        <div class="col-lg-4">
+      
+        </div> 
+      </div> 
+</div>
+

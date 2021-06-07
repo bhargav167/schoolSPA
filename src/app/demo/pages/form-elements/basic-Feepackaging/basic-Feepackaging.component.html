@@ -1,0 +1,60 @@
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <ng-container><h5 class="m-b-10">Fee</h5></ng-container>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/dashboard/analytics/']" ><i class="feather icon-home"></i></a>
+           </li> 
+           <li class="breadcrumb-item"><a [routerLink]="['/forms/basic/']">Fee</a></li>
+           <li class="breadcrumb-item"><a [routerLink]="['/forms/Feepackaging/']">Fee Packaging</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class level</label>
+      <select (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+        <option value="-1" [selected]="selected" disabled>--Select--</option>
+        <option value="1">Junior</option>
+        <option value="2">Senior</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class</label>
+      <select (change)='onOptionsSelected($event)' class="form-control" id="exampleFormControlSelect1"> 
+          <option *ngFor="let items of allClasses" [ngValue]="items">{{items.classes}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class Section</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option [selected]="selected" disabled>--Select--</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+      </select>
+      <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <br>
+    <button type="button" (click)="GetFeeTypes()" style="margin-top: 8px;" class="btn btn-info"><i class="fa fa-search"></i> Search</button>&nbsp;
+    <a style="margin-top: 8px;" 
+    class="btn btn-primary"
+   [routerLink]="['/forms/AddFeePackaging']" 
+    ><i class="fa fa-plus"></i> Add New</a>
+  </div>
+</div> 
+  

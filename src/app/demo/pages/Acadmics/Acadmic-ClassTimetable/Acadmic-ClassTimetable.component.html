@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class level</label>
+      <select (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+        <option value="-1" [selected]="selected" disabled>--Select--</option>
+        <option value="1">Junior</option>
+        <option value="2">Senior</option>
+      </select>  
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class</label>
+      <select (change)='onOptionsSelected($event)' class="form-control" id="exampleFormControlSelect1"> 
+        <option [selected]="selected">--Select--</option>
+          <option *ngFor="let items of allClasses" [ngValue]="items">{{items.classes}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Class Section</label>
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option [selected]="selected">--Select--</option>
+        <option *ngFor="let items of sections">{{items}}</option>
+      </select>
+      <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+    </div>
+  </div>
+  
+ 
+  <div class="col-lg-2">
+      <br>
+    <div class="form-group"> 
+      <button style="margin-top: 8px;" (click)="GetFeeTypes()" class="btn btn-danger" type="button"><i class="fa fa-search"></i> Get</button>
+    &nbsp; <a style="margin-top: 8px; color: white;" [routerLink]="['/Acadmic/AddClassTimetable']" routerLinkActive="router-link-active"    class="btn btn-info" type="button"><i class="fa fa-plus"></i> Add</a>
+    </div>
+  </div>
+
+</div> 

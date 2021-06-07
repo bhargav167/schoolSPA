@@ -1,0 +1,79 @@
+<h4 class="text text-center">Session Settings</h4>
+<hr>
+
+<section class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Add Session</h3>
+        </div>
+        <form [formGroup]="registerSession" (ngSubmit)="AddSession()">
+          <div class="box-body">
+            <div class="form-group">
+              <label>Session</label><small class="req"> *</small>
+              <input formControlName="Session"
+                [ngClass]="{'is-invalid': registerSession.get('Session').errors && registerSession.get('Session').touched}"
+                type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Session">
+              <small id="emailHelp"
+                *ngIf="registerSession.get('Session').hasError('required') && registerSession.get('Session').touched"
+                class="invalid-feedback">Please Enter Session</small>
+              <small id="emailHelp"
+                *ngIf="registerSession.get('Session').hasError('minlength') && registerSession.get('Session').touched"
+                class="invalid-feedback">Please enter valid Session. Too short</small>
+            </div>
+          </div>
+          <div class="box-footer">
+            <button class="btn btn-primary event-btn m-2" type="submit" [disabled]="!registerSession.valid">
+              <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+              <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+              <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-save"></i> Save</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="box box-primary">
+        <div class="box-header ptbnull">
+          <h3 class="box-title titlefix">Session List</h3>
+        </div>
+        <div class="box-body">
+          <div class="mailbox-messages">
+            <div class="">
+              <div class="download_label">Session List</div>
+             <table class="table table-stripe">
+               <thead>
+                 <th>Id</th>
+                 <th>Sessions</th>
+                 <th>Status</th>
+                 <th>Action</th>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let item of session">
+                   <td>{{item.Id}}</td>
+                   <td>{{item.Session}}</td>
+                   <td *ngIf="item.IsActive==true"><span class="badge badge-primary">Active</span></td>
+                   <td *ngIf="item.IsActive==false">     </td>
+                   <td>
+                     <button (click)="Edit(item)" type="button" class="btn btn-warning">Edit</button>&nbsp;
+                     <button type="button" (click)="DeleteSession(item)" class="btn btn-danger">Delete</button>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- <div class="">
+  <label  class="radio-inline">
+    <input type="radio" name="optradio" (change)="ActivateSession(item.Id)">{{item.Session}}
+  </label>
+  
+</div> -->

@@ -1,0 +1,309 @@
+ 
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <ng-container><h5 class="m-b-10">Edit</h5></ng-container>
+              </div>
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a [routerLink]="['/dashboard/analytics/']" ><i class="feather icon-home"></i></a>
+                 </li> 
+                 <li class="breadcrumb-item"><a [routerLink]="['/basic/emplist/']">Employee</a></li>
+                   <li class="breadcrumb-item"><a [routerLink]="['/dashboard/analytics/']">Edit</a></li> 
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> 
+
+<div class="row">
+    <div class="col-sm-12"> 
+      <app-card [hidHeader]="true" cardClass="tab-card">
+       
+        <ngb-tabset>
+          <ngb-tab title="Employee Detail's">
+            <ng-template ngbTabContent>
+              <h4>Employee Information</h4>
+              <form #studentForm="ngForm"  id="quick" (ngSubmit)="studentForm.form.valid && updateEmployee()" novalidate> 
+              <div class="container">
+                  <div *ngIf="studentForm.dirty" class="alert alert-info">
+                      <span>
+                        <b> Information: </b> You have made changes. Any unsave change will be lost!"</span>
+                    </div>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">First Name</label>
+                      <input name="firstName" [(ngModel)]="Employee.firstName" 
+                      #firstName="ngModel"
+                      [ngClass]="{ 'is-invalid': studentForm.submitted && firstName.invalid }" required
+                       type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="First Name">
+                        <div *ngIf="studentForm.submitted && firstName.invalid" class="invalid-feedback">
+                            <div *ngIf="firstName.errors.required">First Name is required</div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Last Name</label>
+                      <input name="lastName" 
+                      #lastName="ngModel"
+                      [ngClass]="{ 'is-invalid': studentForm.submitted && lastName.invalid }" required
+                      [(ngModel)]="Employee.lastName" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Last Name">
+                        <div *ngIf="studentForm.submitted && lastName.invalid" class="invalid-feedback">
+                            <div *ngIf="lastName.errors.required">Last Name is required</div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Email address</label>
+                      <input name="email" [(ngModel)]="Employee.email" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="First Name">
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Father Name</label>
+                      <input name="fatherName" [(ngModel)]="Employee.fatherName" 
+                      #fatherName="ngModel"
+                      [ngClass]="{ 'is-invalid': studentForm.submitted && fatherName.invalid }" required
+                      type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Father Name">
+                        <div *ngIf="studentForm.submitted && fatherName.invalid" class="invalid-feedback">
+                            <div *ngIf="fatherName.errors.required">Last Name is required</div>
+                        </div>
+                    </div>
+                  </div>
+                </div> 
+
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Gender</label>
+                      <select name="gender" [(ngModel)]="Employee.gender" class="form-control"
+                        id="exampleFormControlSelect1">
+                        <option [selected]="selected" [value]="Employee.gender">{{Employee.gender}}</option>
+                        <option value="male" *ngIf="Employee.gender=='female'">Male</option>
+                        <option value="other" *ngIf="Employee.gender=='female'">Other</option>
+                        <option value="female" *ngIf="Employee.gender=='male'">Female</option>
+                        <option value="other" *ngIf="Employee.gender=='male'">Other</option>
+                        <option value="male" *ngIf="Employee.gender=='other'">Male</option>
+                        <option value="female" *ngIf="Employee.gender=='other'">Female</option>
+                      </select>
+                      <small id="emailHelp" class="invalid-feedback">Please select gender</small>
+                    </div>
+                  </div>
+              
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Class level</label>
+                      <select name="classLevel" [(ngModel)]="Employee.classLevel" (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+                        <option value="1" *ngIf="clasLevel=='Junior'">Junior</option>
+                        <option value="2" *ngIf="clasLevel=='Senior'">Senior</option>
+              
+                        <option value="1" *ngIf="clasLevel!='Junior'">Junior</option>
+                        <option value="2" *ngIf="clasLevel!='Senior'">Senior</option>
+                      </select>
+                      <small id="emailHelp" class="invalid-feedback">Please select Class level</small>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Class</label>
+                      <ejs-multiselect [(ngModel)]="Employee.standers" 
+                       id='localData' #local [dataSource]='allClasses' 
+                       [fields]='localFields' [placeholder]='localWaterMark'></ejs-multiselect> 
+                       <div *ngIf="studentForm.submitted && standers.invalid" class="invalid-feedback">
+                        <div *ngIf="standers.errors.required">Please Select Registration Number</div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Section</label>
+                      <select  name="classsection" [(ngModel)]="Employee.classsection" class="form-control" id="exampleFormControlSelect1">
+                        <option selected="selected" >{{Employee.classsection | uppercase}}</option>
+                        <option *ngIf="Employee.classsection=='A'">B</option>
+                        <option *ngIf="Employee.classsection=='A'">C</option>
+                        <option *ngIf="Employee.classsection=='B'">A</option>
+                        <option *ngIf="Employee.classsection=='B'">C</option>
+                        <option *ngIf="Employee.classsection=='C'">A</option>
+                        <option *ngIf="Employee.classsection=='C'">B</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> 
+
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Registration Number</label>
+                      <input name="RegistrationNo" disabled="disabled" type="number" class="form-control" 
+                      #RegistrationNo="ngModel"
+                      [ngClass]="{ 'is-invalid': studentForm.submitted && admissionno.invalid }" required
+                      [(ngModel)]="Employee.RegistrationNo" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Admission no">
+                        <div *ngIf="studentForm.submitted && RegistrationNo.invalid" class="invalid-feedback">
+                            <div *ngIf="RegistrationNo.errors.required">Please enter Registration Number</div>
+                        </div>
+                  
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Employee Id</label>
+                      <input required name="EmpId" 
+                      #EmpId="ngModel"
+                      disabled="disabled"
+                      [ngClass]="{ 'is-invalid': studentForm.submitted && rollNo.invalid }" required
+                      [(ngModel)]="Employee.EmpId" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Roll no">
+                        <div *ngIf="studentForm.submitted && EmpId.invalid" class="invalid-feedback">
+                            <div *ngIf="EmpId.errors.required">Please enter Employee Id</div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Date Of Addmission</label>
+                      <input name="doa" readonly [(ngModel)]="Employee.doa" type="text" class="form-control" id="exampleInputEmail1"
+                     
+                      aria-describedby="emailHelp" placeholder="DOA">
+                      <small id="emailHelp" class="invalid-feedback">Please select admission date</small>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Medium</label>
+                      <input name="medium" 
+                      #medium="ngModel"
+                      [ngClass]="{ 'is-invalid': studentForm.submitted && medium.invalid }" required
+                      [(ngModel)]="Employee.medium" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Medium">
+                        <div *ngIf="studentForm.submitted && medium.invalid" class="invalid-feedback">
+                            <div *ngIf="medium.errors.required">Please select medium</div>
+                        </div> 
+                    </div>
+                  </div> 
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Phone</label>
+                        <input name="phone" 
+                        #phone="ngModel"
+                        minlength="10"
+                        maxlength="10"
+                        [ngClass]="{ 'is-invalid': studentForm.submitted && phone.invalid }" required
+                        [(ngModel)]="Employee.phone" (keyup)="checkAlpha($event)" type="text"
+                          class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Phone">
+                          <div *ngIf="studentForm.submitted && phone.invalid" class="invalid-feedback">
+                              <div *ngIf="phone.errors.required">Please Enter Phone number</div>
+                              <div *ngIf="phone.errors.minlength">Please Enter Valid number</div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nationality</label> 
+                            <input name="nationality"  
+                            #nationality="ngModel"
+                            [ngClass]="{ 'is-invalid': studentForm.submitted && nationality.invalid }" required
+                            [(ngModel)]="Employee.Nationality"
+                             type="text" 
+                            class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nationality">
+                            <div *ngIf="studentForm.submitted && nationality.invalid" class="invalid-feedback">
+                                <div *ngIf="nationality.errors.required">Please enter nationality</div>
+                            </div>
+                            
+                          </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Mother Tongue</label> 
+                            <input name="motherTongue" [(ngModel)]="Employee.motherTongue"
+                           type="text" 
+                             class="form-control" 
+                             id="exampleInputEmail1" 
+                             aria-describedby="emailHelp" 
+                             placeholder="Mother tongue">
+                             <small id="emailHelp" class="invalid-feedback">Please select Birthdate</small>
+                          </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Date Of Birth</label>
+                            <input name="dob" [(ngModel)]="Employee.dob" readonly
+                            type="text"  
+                            class="form-control" 
+                            id="exampleInputEmail1" aria-describedby="emailHelp"  
+                            placeholder="Date of birth"> 
+                            <small id="emailHelp" class="invalid-feedback">Please select Birthdate</small>
+                          </div>
+                    </div>
+                  
+                  </div>
+
+                  <hr>
+  <div class="row">
+<div class="col-lg-5">
+</div>
+<div class="col-lg-2">
+    <button [disabled]="!studentForm.dirty" form="quick" type="submit" class="btn btn-primary event-btn m-2">
+        <span *ngIf="this.btnLoader"  class="spinner-border spinner-border-sm" role="status"></span>
+        <span *ngIf="this.btnLoader"  class="load-text"> Loading...</span>
+        <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-save"></i> Submit</span>
+      </button>
+ 
+</div>
+<div class="col-lg-5">
+ 
+</div>
+  </div> 
+              </div>
+            </form>
+            </ng-template>
+          </ngb-tab>
+            <!-- Photos Detail's -->
+            <ngb-tab title="Upload Photos Here">
+              <ng-template ngbTabContent>
+                <div class="input-group mb-3 col-lg-4">
+                  <label class="input-group">Choose Employee Photo</label>  
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                  </div>
+                  <div class="custom-file">
+                    <input accept="image/*" #file  type="file" class="custom-file-input" id="inputGroupFile01">
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                  </div>
+                </div> 
+                  <div class="row">
+                    <div class="col-lg-4">
+  
+                    </div>
+                    <div class="col-lg-4">
+                      <button type="button" class="btn btn-success" (click)="uploadFile(file.files)">Upload File</button>
+                    </div>
+                    <div class="col-lg-4">
+                      <span class="upload" *ngIf="progress > 0">
+                        {{progress}}%
+                      </span>
+                      <span class="upload" *ngIf="message">
+                        {{message}}
+                      </span>
+                    </div>
+                  </div>
+              </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+      </app-card>
+    </div>
+  </div>
+  

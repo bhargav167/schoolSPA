@@ -1,0 +1,52 @@
+<ul class="navbar-nav ml-auto">
+  <li>
+    <div>
+      <div class="btn-group dropleft">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{selectedSession}}
+        </button>
+        <div class="dropdown-menu">
+          <button type="button" *ngFor="let item of AllSession" (click)="LoadSession(item.Id)" class="btn btn-info dropdown-item">{{item.Session}}</button>
+        </div>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div class="dropdown drp-user" ngbDropdown placement="auto">
+      <a href="javascript:" ngbDropdownToggle>
+        <img [src]="imgURL" class="img-radius wid-40" alt="User-Profile-Image">
+      </a>
+      <div class="dropdown-menu dropdown-menu-right profile-notification" ngbDropdownMenu>
+        <div class="pro-head">
+          <img  [src]="imgURL" class="img-radius" alt="User-Profile-Image">
+          
+          <span>{{userDetails?.UserName}} ({{role}})</span>
+          <a (click)="Logout()" style="cursor: pointer;" class="dud-logout" title="Logout">
+            <i class="feather icon-log-out"></i>
+          </a> 
+        </div>
+        <ul *ngIf="role=='Admin'" class="pro-body">
+          <li><a [routerLink]="['/Profile/AdminProfile']" routerLinkActive="router-link-active"  class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+          <li><a href="javascript:" class="dropdown-item"><i class="feather icon-mail"></i> Edit Profile</a></li>
+          <li><a href="javascript:" class="dropdown-item"><i class="feather icon-lock"></i> Lock Screen</a></li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<section class="header-user-list" *ngIf="visibleUserList && !this.gradientConfig['rtl-layout']" [ngClass]="{'open': visibleUserList}" [@slideInOutLeft]>
+  <app-chat-user-list (onChatToggle)="onChatToggle($event)" (onChatCollapse)="this.visibleUserList = !this.visibleUserList; this.chatMessage = false;"></app-chat-user-list>
+</section>
+
+<section class="header-chat" *ngIf="chatMessage && !this.gradientConfig['rtl-layout']" [ngClass]="{'open': chatMessage}" [@slideInOutLeft]>
+  <app-chat-msg (onChatToggle)="this.chatMessage = !this.chatMessage" [friendId]="friendId"></app-chat-msg>
+</section>
+
+<section class="header-user-list" *ngIf="visibleUserList && this.gradientConfig['rtl-layout']" [ngClass]="{'open': visibleUserList}" [@slideInOutRight]>
+  <app-chat-user-list (onChatToggle)="onChatToggle($event)" (onChatCollapse)="this.visibleUserList = !this.visibleUserList; this.chatMessage = false;"></app-chat-user-list>
+</section>
+
+<section class="header-chat" *ngIf="chatMessage && this.gradientConfig['rtl-layout']" [ngClass]="{'open': chatMessage}" [@slideInOutRight]>
+  <app-chat-msg (onChatToggle)="this.chatMessage = !this.chatMessage" [friendId]="friendId"></app-chat-msg>
+</section>

@@ -1,0 +1,99 @@
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          <ng-container><h5 class="m-b-10">Fee</h5></ng-container>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/dashboard/analytics/']" ><i class="feather icon-home"></i></a>
+           </li> 
+           <li class="breadcrumb-item"><a [routerLink]="['/forms/basic/']">Fee</a></li>
+           
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row"> 
+<div class="col-md-6">
+  <app-card cardTitle="Fee Particulars" blockClass="table-border-style">
+    <a [routerLink]="['/forms/Feeparticular']" routerLinkActive="router-link-active" >
+      <div class="card">
+        <div class="row">
+          <div class="col-lg-3 bg bg-warning">
+            <h3 style="margin-top: 30px;" class="text text-center text-white"><i
+                class="fa fa-2x fa-money-bill-wave"></i>
+            </h3>
+          </div>
+          <div class="col-lg-9">
+            <div class="card-header">
+              <h5>Fee Particlular</h5>
+            </div>
+            <div class="card-body">
+              <p class="text text-bold">Here we can setup Fee particulars</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </app-card>
+</div>
+
+<div class="col-md-6">
+  <app-card cardTitle="Fee Terms" blockClass="table-border-style">
+    <a [routerLink]="['/forms/AddFeePackaging']">
+      <div class="card">
+        <div class="row">
+          <div class="col-lg-3 bg bg-warning">
+            <h3 style="margin-top: 30px;" class="text text-center text-white"><i
+                class="fa fa-2x fa-money-bill-wave"></i>
+            </h3>
+          </div>
+          <div class="col-lg-9">
+            <div class="card-header">
+              <h5>Fee Packages</h5>
+            </div>
+            <div class="card-body">
+              <p class="text text-bold">Here we can setup Fee Packages</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </app-card>
+</div>
+
+</div>
+
+
+<div class="row"> 
+  <div class="col-md-6">
+    <app-card cardTitle="Collect Fee" blockClass="table-border-style">
+      <a [routerLink]="['/forms/CollectFee']" routerLinkActive="router-link-active" >
+        <div class="card">
+          <div class="row">
+            <div class="col-lg-3 bg bg-warning">
+              <h3 style="margin-top: 30px;" class="text text-center text-white"><i
+                  class="fa fa-2x fa-money-bill-wave"></i>
+              </h3>
+            </div>
+            <div class="col-lg-9">
+              <div class="card-header">
+                <h5>Collect Fee</h5>
+              </div>
+              <div class="card-body">
+                <p class="text text-bold">Here we can Collect Fee from student</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </app-card>
+  </div>
+  
+  
+  
+  </div>

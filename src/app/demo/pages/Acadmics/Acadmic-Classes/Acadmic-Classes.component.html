@@ -1,0 +1,94 @@
+<section class="content">
+  <div class="row">
+
+    <div class="col-md-4">
+      <!-- Horizontal Form -->
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Add Class</h3>
+        </div><!-- /.box-header -->
+        <form id="save" [formGroup]="registerClass" (ngSubmit)="AddClass()">
+          <div class="box-body">
+            <div class="form-group">
+              <label>Class</label><small class="req"> *</small>
+              <input formControlName="classes"
+                [ngClass]="{'is-invalid': registerClass.get('classes').errors && registerClass.get('classes').touched}"
+                type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Class">
+              <small id="emailHelp"
+                *ngIf="registerClass.get('classes').hasError('required') &&  registerClass.get('classes').touched"
+                class="invalid-feedback">Please Enter Class</small>
+              <small id="emailHelp"
+                *ngIf="registerClass.get('classes').hasError('maxlength') && registerClass.get('classes').touched"
+                class="invalid-feedback">Please enter valid Class. Too Long</small>
+            </div> 
+          </div><!-- /.box-body -->
+
+        </form> 
+        <div class="box-body">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Sections</label><small class="req"> *</small>
+            <div *ngFor="let item of sec" class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="item.isChecked" (change)="changeSelection()" [name]="item.section"
+                  [value]="item.section"> {{item.section}} </label>
+            </div>
+            <span class="text-danger"></span>
+          </div>
+        </div>
+       
+        <div class="box-footer">
+          <button type="submit" form="save" class="btn btn-info pull-right">Save</button>
+        </div>
+      </div>
+
+    </div>
+    <!--/.col (right) -->
+    <!-- left column -->
+    <div class="col-md-8">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <div class="box-header ptbnull">
+          <h3 class="box-title titlefix">Class List</h3>
+        </div>
+        <div class="box-body">
+          <div class="mailbox-messages">
+            <div class="">
+              <div class="download_label">Session List</div>
+             <table class="table table-stripe">
+               <thead>
+                 <th>Class</th>
+                 <th>Sessions</th>
+                 <th>Action</th>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let item of classes">
+                  
+                   <td>{{item.classes}}</td>
+                   <td>{{item.sections}}</td>
+                   <td>
+                     <button (click)="Edit(item)" type="button" class="btn btn-warning">Edit</button>&nbsp;
+                     <button type="button" (click)="DeleteClass(item)" class="btn btn-danger">Delete</button>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col (left) -->
+    <!-- right column -->
+
+  </div>
+  <div class="row">
+    <!-- left column -->
+
+    <!-- right column -->
+    <div class="col-md-12">
+
+    </div>
+    <!--/.col (right) -->
+  </div> <!-- /.row -->
+</section>

@@ -1,0 +1,247 @@
+ 
+<div class="container">
+  <form [formGroup]="registerStudent" (ngSubmit)="register()"> 
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">First Name</label> 
+        <input formControlName="firstName" 
+        [ngClass]="{'is-invalid': registerStudent.get('firstName').errors && registerStudent.get('firstName').touched}"
+        type="text" 
+        class="form-control" 
+        id="exampleInputEmail1" aria-describedby="emailHelp" 
+        placeholder="First Name">  
+        <small id="emailHelp" *ngIf="registerStudent.get('firstName').hasError('required') && registerStudent.get('firstName').touched" class="invalid-feedback">Please enter First Name</small>
+        <small id="emailHelp" *ngIf="registerStudent.get('firstName').hasError('minlength') && registerStudent.get('firstName').touched" class="invalid-feedback">Please enter valid name. Too short</small>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Last Name</label>
+
+        <input formControlName="lastName" type="text" 
+        [ngClass]="{'is-invalid': registerStudent.get('lastName').errors && registerStudent.get('lastName').touched}"
+        class="form-control" 
+        id="exampleInputEmail1" aria-describedby="emailHelp" 
+        placeholder="Last Name">
+        <small id="emailHelp" *ngIf="registerStudent.get('lastName').hasError('required') && registerStudent.get('lastName').touched" class="invalid-feedback">Please enter First Name</small>
+        <small id="emailHelp" *ngIf="registerStudent.get('lastName').hasError('minlength') && registerStudent.get('lastName').touched" class="invalid-feedback">Please enter valid name. Too short</small>
+          
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input formControlName="email" 
+        [ngClass]="{'is-invalid': registerStudent.get('email').errors && registerStudent.get('email').touched}"
+        type="email" class="form-control" 
+        id="exampleInputEmail1" aria-describedby="emailHelp" 
+        placeholder="Enter email">
+        <small id="emailHelp" *ngIf="registerStudent.get('email').hasError('required') && registerStudent.get('email').touched" class="invalid-feedback">Please enter First Name</small>
+        <small id="emailHelp" *ngIf="registerStudent.get('email').hasError('minlength') && registerStudent.get('email').touched" class="invalid-feedback">Please enter valid email. Too short</small>
+      
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Gender</label>
+        <select formControlName="gender" class="form-control" 
+        [ngClass]="{'is-invalid': registerStudent.get('gender').errors && registerStudent.get('gender').touched}"
+        id="exampleFormControlSelect1">
+          <option [selected]="selected" disabled>--Select--</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option> 
+        </select>
+        <small id="emailHelp" class="invalid-feedback">Please select gender</small>
+       </div>
+    </div>
+  </div> 
+
+  
+
+  <div class="row">
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Date Of Birth</label>
+          <input formControlName="dob" 
+          [ngClass]="{'is-invalid': registerStudent.get('dob').errors && registerStudent.get('dob').touched}"
+          type="text" 
+          
+          class="form-control" 
+          id="exampleInputEmail1" aria-describedby="emailHelp" 
+          name="dp"
+          placeholder="Date of birth" bsDatepicker>
+ 
+
+          <small id="emailHelp" class="invalid-feedback">Please select Birthdate</small>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Mother Tongue</label>
+          
+          <input formControlName="motherTongue"
+          [ngClass]="{'is-invalid': registerStudent.get('motherTongue').errors && registerStudent.get('motherTongue').touched}"
+           type="text" 
+           class="form-control" 
+           id="exampleInputEmail1" 
+           aria-describedby="emailHelp" 
+           placeholder="Mother tongue">
+           <small id="emailHelp" class="invalid-feedback">Please enter Mother Tongue</small>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Nationality</label> 
+          <input 
+          [ngClass]="{'is-invalid': registerStudent.get('nationality').errors && registerStudent.get('nationality').touched}"
+          formControlName="nationality" type="text" 
+          class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nationality">
+          <small id="emailHelp" class="invalid-feedback">Please enter nationality</small>
+        </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Father Name</label>
+            <input formControlName="fathername"
+            [ngClass]="{'is-invalid': registerStudent.get('fathername').errors && registerStudent.get('fathername').touched}" 
+            type="fathername" 
+             class="form-control" 
+             id="exampleInputEmail1" aria-describedby="emailHelp" 
+             placeholder="Father Name">
+             <small id="emailHelp" class="invalid-feedback">Please enter father name</small>
+            </div>
+        </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Phone</label>
+        <input formControlName="phone" 
+        (keyup)="checkAlpha($event)"
+        [ngClass]="{'is-invalid': registerStudent.get('phone').errors && registerStudent.get('phone').touched}" 
+        type="text" 
+        class="form-control" 
+        id="exampleInputEmail1" aria-describedby="emailHelp" 
+        placeholder="Phone">
+        <small id="emailHelp" *ngIf="registerStudent.get('phone').hasError('required') && registerStudent.get('phone').touched" class="invalid-feedback">Please enter Mobile no</small>
+        <small id="emailHelp" *ngIf="registerStudent.get('phone').hasError('minlength') && registerStudent.get('phone').touched" class="invalid-feedback">Enter Number must be 10 digit</small>
+        <small id="emailHelp" *ngIf="registerStudent.get('phone').hasError('maxlength') && registerStudent.get('phone').touched" class="invalid-feedback">Enter Number must be 10 digit</small>
+        <small id="emailHelp" *ngIf="registerStudent.get('phone').hasError('pattern') && registerStudent.get('phone').touched" class="invalid-feedback">Only digit allow</small>
+
+          </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class level</label>
+        <select (change)="LevelChange($event)" formControlName="classLevel" 
+        [ngClass]="{'is-invalid': registerStudent.get('classLevel').errors && registerStudent.get('classLevel').touched}" 
+        class="form-control" 
+        id="exampleFormControlSelect1">
+        <option value="-1"  [selected]="selected" disabled>--Select--</option>          
+           <option value="1">Junior</option>
+          <option value="2">Senior</option>
+        </select>
+        <small id="emailHelp" class="invalid-feedback">Please select Class level</small>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class</label>
+        <select formControlName="standers" 
+        (change)="ClassChange($event)"
+        appSelectRequiredValidator
+        [ngClass]="{'is-invalid': registerStudent.get('standers').errors && registerStudent.get('standers').touched}" 
+        class="form-control" id="exampleFormControlSelect1">
+        <option [selected]="selected">--Select--</option>
+         <option *ngFor="let items of allClasses">{{items.classes}}</option>
+        </select>
+        <small id="emailHelp" class="invalid-feedback">Please select class</small>
+        <small id="emailHelp" *ngIf="registerStudent.get('standers').hasError('defaultSelected') && registerStudent.get('standers').touched" class="invalid-feedback">Only digit allow</small>
+ 
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class Section</label>
+        <select formControlName="classsection" 
+        [ngClass]="{'is-invalid': registerStudent.get('classsection').errors && registerStudent.get('classsection').touched}" 
+        class="form-control" id="exampleFormControlSelect1">
+        <option [selected]="selected">--Select--</option>
+        <option *ngFor="let items of sections">{{items}}</option>
+        </select>
+        <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+      </div>
+    </div>
+  
+  </div>
+
+  <div class="row">
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Admission Number</label>
+          <input formControlName="admissionno" 
+           type="text"  
+          [value]="admissionNo"
+          readonly
+          class="form-control" 
+          id="exampleInputEmail1" aria-describedby="emailHelp" 
+          placeholder="Admission no">
+         </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Roll Number</label>
+          <input formControlName="rollno" 
+          [ngClass]="{'is-invalid': registerStudent.get('rollno').errors && registerStudent.get('rollno').touched}" 
+          type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Roll no">
+          <small id="emailHelp" class="invalid-feedback">Please enter roll no</small>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Date Of Addmission</label>
+          <input formControlName="doa" 
+          [value]="todaydate"
+          [bsConfig]="bsConfig"
+          bsDatepicker
+          [ngClass]="{'is-invalid': registerStudent.get('doa').errors && registerStudent.get('doa').touched}" 
+          type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="DOA">
+          <small id="emailHelp" class="invalid-feedback">Please select admission date</small>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Medium</label>
+          <input  formControlName="medium"
+          [ngClass]="{'is-invalid': registerStudent.get('medium').errors && registerStudent.get('medium').touched}" 
+          type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Medium">
+          <small id="emailHelp" class="invalid-feedback">Please select medium</small>
+
+        </div>
+      </div>
+    
+  </div>
+
+<hr>
+  <div class="row">
+<div class="col-lg-5">
+</div>
+<div class="col-lg-2">
+    <button class="btn btn-primary event-btn m-2" type="submit" [disabled]="!registerStudent.valid">
+        <span *ngIf="this.btnLoader"  class="spinner-border spinner-border-sm" role="status"></span>
+        <span *ngIf="this.btnLoader"  class="load-text"> Loading...</span>
+        <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-save"></i> Save</span>
+      </button>
+    
+</div>
+<div class="col-lg-5">
+ 
+</div>
+  </div> 
+
+</form> 
+ </div>
+

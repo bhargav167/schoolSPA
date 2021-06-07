@@ -1,0 +1,812 @@
+  
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class level</label>
+        <select (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+          <option value="-1" [selected]="selected" disabled>--Select--</option>
+          <option value="1">Junior</option>
+          <option value="2">Senior</option>
+        </select>  
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class</label>
+        <select (change)='onOptionsSelected($event)' class="form-control" id="exampleFormControlSelect1"> 
+          <option [selected]="selected">--Select--</option>
+            <option *ngFor="let items of allClasses" [ngValue]="items">{{items.classes}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Class Section</label>
+        <select (change)='onOptionsSelectedSec($event)' class="form-control" id="exampleFormControlSelect1">
+          <option [selected]="selected">--Select--</option>
+          <option *ngFor="let items of sections">{{items}}</option>
+        </select>
+        <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+      </div>
+    </div>
+    
+   
+    <div class="col-lg-2">
+        <br>
+      <div class="form-group"> 
+        <button style="margin-top: 8px;" (click)="GetTimeTable()" class="btn btn-danger" type="button"><i class="fa fa-search"></i> Get</button>
+      &nbsp;
+      </div>
+    </div>
+  
+  </div> 
+  <br>
+  <br>
+  <br>
+  <hr>
+ 
+  <div class="row">
+  <div class="col-lg-12"> 
+    <ngb-tabset (tabChange)="SelectWeekend($event)">
+      <ngb-tab title="Monday">
+        <ng-template ngbTabContent> 
+          <app-card cardTitle="Basic Table" blockClass="table-border-style">
+            <div *ngIf="isShow==true" class="table-responsive">
+            <form #form="ngForm" id="myform" autocomplete="off" (ngSubmit)="SaveTTMon(tttable)">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Subject</th>
+                    <th>Teacher</th>
+                    <th>Time From</th>
+                    <th>Time To</th>
+                    <th>Room No</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- By Adding -->
+                  <tr *ngFor="let item of tttable; let i=index"> 
+                    <td>
+                      <select [(ngModel)]="item.subjectsId" [name]="'Subject'+i" class="form-control" #Subject="ngModel"
+                        class="form-control" [id]="'subject'+i">
+                        <option *ngFor="let items of subjects" [selected]="items.codeId===item.subjectsId"
+                          [ngValue]="items.codeId">
+                          {{items.Subject}} ({{items.codeId}})</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select [name]="'teacher'+i" #teacher="ngModel" [(ngModel)]="item.teachersId" class="form-control"
+                        [id]="'teacher'+i">
+                        <option *ngFor="let items of emp" [selected]="items.EmpId===item.EmpId"
+                          [ngValue]="items.EmpId">{{items.firstName}}
+                          {{items.lastName}} ({{items.EmpId}})</option>
+                      </select>
+                    </td>
+                    <td> <input [id]="'timefrom'+i" [name]="'timefrom'+i" #timefrom="ngModel"
+                        [(ngModel)]="item.timefrom" [ngxTimepicker]="picker3" type="text" [value]="item.timefrom"
+                        class="form-control" />
+                         <ngx-material-timepicker #picker3></ngx-material-timepicker> 
+                    </td>
+                    <td>
+                      <input type="text" [id]="'timeTo'+i" [name]="'timeTo'+i" #timeTo="ngModel"
+                        [(ngModel)]="item.timeTo" class="form-control" [ngxTimepicker]="picker4"/>
+                        <ngx-material-timepicker #picker4></ngx-material-timepicker>
+
+                      <input type="hidden" [id]="'WeekDay'+i" name="WeekDay" #WeekDay="ngModel"
+                        [(ngModel)]="item.WeekDay" class="form-control" />
+                    </td>
+                    <td><input type="number" [id]="'RoomNo'+i" [name]="'RoomNo'+i" #RoomNo="ngModel"
+                        [(ngModel)]="item.RoomNo" class="form-control" />
+                    </td>
+                    <td>
+                      <input type="button" class="btn btn-danger" value="Remove" (click)="DeleteSTT(item.Id)" />
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                 &nbsp;&nbsp; <button [disabled]="!form.dirty" form="myform" type="submit"
+                     class="btn btn-primary event-btn m-2">
+                     <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+                     <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+                     <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-refresh"></i> Update</span>
+                   </button> 
+                </tfoot>
+              </table>
+            </form>
+           
+            </div>
+             <!-- Adding -->
+             <form [formGroup]="MonForm" (ngSubmit)="onSubmit()">
+               <table class="table table-bordered" formArrayName="quantities">
+                 <tr>
+                   <th colspan="5">Add Multiple TimeTable:</th>
+                   <th width="150px">
+                     <button style="margin-top: 8px; color: white;" (click)="AddRow()" class="btn btn-info"
+                       type="button"><i class="fa fa-plus"></i> Add</button>
+                   </th>
+                 </tr>
+                 <tr *ngFor="let quantity of quantities().controls; let i=index" [formGroupName]="i">
+                   <td>
+                     Subject :
+                     <select class="form-control" formControlName="subjectsId" class="form-control" [id]="'subject'+i">
+                       <option *ngFor="let items of subjects" [ngValue]="items.codeId">
+                         {{items.Subject}} ({{items.codeId}})</option>
+                     </select>
+                   </td>
+                   <td>
+                     Teacher:
+                     <select class="form-control" formControlName="teachersId" class="form-control" [id]="'teacher'+i">
+                       <option *ngFor="let items of emp" [ngValue]="items.EmpId">
+                         {{items.firstName}}
+                         {{items.lastName}} ({{items.EmpId}})</option>
+                     </select>
+                   </td>
+                   <td>
+                     Time From:
+                     <input class="form-control" formControlName="timefrom" [ngxTimepicker]="picker">
+                     <ngx-material-timepicker #picker></ngx-material-timepicker>
+                   </td>
+                   <td>
+                     Time To:
+                     <input class="form-control" formControlName="timeTo" [ngxTimepicker]="picker1">
+                     <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                   </td>
+                   <td>
+                     Room No:
+                     <input type="number" formControlName="RoomNo" class="form-control">
+                   </td>
+                   <td>
+                     <button (click)="removeQuantity(i)" class="btn btn-danger">Remove</button>
+                   </td>
+                 </tr>
+                 <tfoot>
+                   &nbsp;&nbsp; <button [disabled]="!MonForm.dirty" type="submit" class="btn btn-primary event-btn m-2">
+                     <span *ngIf="this.btnLoader1" class="spinner-border spinner-border-sm" role="status"></span>
+                     <span *ngIf="this.btnLoader1" class="load-text"> Loading...</span>
+                     <span *ngIf="!this.btnLoader1" class="btn-text"><i class="fa fa-refresh"></i> Submit</span>
+                   </button>
+                 </tfoot>
+               </table>
+
+             </form>
+          </app-card>
+        </ng-template>
+      </ngb-tab> 
+
+        <ngb-tab title="Tuesday">
+           <ng-template ngbTabContent>
+             <app-card cardTitle="Basic Table" blockClass="table-border-style">
+               <div *ngIf="isShow==true" class="table-responsive">
+                 <form #form="ngForm" id="myform" autocomplete="off" (ngSubmit)="SaveTTMon(tttable)">
+                   <table class="table">
+                     <thead>
+                       <tr>
+                         <th>Subject</th>
+                         <th>Teacher</th>
+                         <th>Time From</th>
+                         <th>Time To</th>
+                         <th>Room No</th>
+                         <th>Action</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <!-- By Adding -->
+                       <tr *ngFor="let item of tttable; let i=index">
+                         <td>
+                           <select [(ngModel)]="item.subjectsId" [name]="'Subject'+i" class="form-control"
+                             #Subject="ngModel" class="form-control" [id]="'subject'+i">
+                             <option *ngFor="let items of subjects" [selected]="items.codeId===item.subjectsId"
+                               [ngValue]="items.codeId">
+                               {{items.Subject}} ({{items.codeId}})</option>
+                           </select>
+                         </td>
+                         <td>
+                           <select [name]="'teacher'+i" #teacher="ngModel" [(ngModel)]="item.teachersId"
+                             class="form-control" [id]="'teacher'+i">
+                             <option *ngFor="let items of emp" [selected]="items.EmpId===item.teachersId"
+                               [ngValue]="items.EmpId">{{items.firstName}}
+                               {{items.lastName}} ({{items.EmpId}})</option>
+                           </select>
+                         </td>
+                         <td> <input [id]="'timefrom'+i" [name]="'timefrom'+i" #timefrom="ngModel"
+                             [(ngModel)]="item.timefrom" [ngxTimepicker]="picker3" type="text" [value]="item.timefrom"
+                             class="form-control" />
+                           <ngx-material-timepicker #picker3></ngx-material-timepicker>
+                         </td>
+                         <td>
+                           <input type="text" [id]="'timeTo'+i" [name]="'timeTo'+i" #timeTo="ngModel"
+                             [(ngModel)]="item.timeTo" class="form-control" [ngxTimepicker]="picker4" />
+                           <ngx-material-timepicker #picker4></ngx-material-timepicker>
+
+                           <input type="hidden" [id]="'WeekDay'+i" name="WeekDay" #WeekDay="ngModel"
+                             [(ngModel)]="item.WeekDay" class="form-control" />
+                         </td>
+                         <td><input type="number" [id]="'RoomNo'+i" [name]="'RoomNo'+i" #RoomNo="ngModel"
+                             [(ngModel)]="item.RoomNo" class="form-control" />
+                         </td>
+                         <td>
+                           <input type="button" class="btn btn-danger" value="Remove" (click)="DeleteSTT(item.Id)" />
+                         </td>
+                       </tr>
+                     </tbody>
+                     <tfoot>
+                       &nbsp;&nbsp; <button [disabled]="!form.dirty" form="myform" type="submit"
+                         class="btn btn-primary event-btn m-2">
+                         <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+                         <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+                         <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-refresh"></i> Update</span>
+                       </button>
+                     </tfoot>
+                   </table>
+                 </form>
+               
+               </div>
+                 <!-- Adding -->
+                 <form [formGroup]="TueForm" (ngSubmit)="onSubmit1()">
+                   <table class="table table-bordered" formArrayName="quantities">
+                     <tr>
+                       <th colspan="5">Add Multiple TimeTable:</th>
+                       <th width="150px">
+                         <button style="margin-top: 8px; color: white;" (click)="AddRow1()" class="btn btn-info"
+                           type="button"><i class="fa fa-plus"></i> Add</button>
+                       </th>
+                     </tr>
+                     <tr *ngFor="let quantity of quantities1().controls; let i=index" [formGroupName]="i">
+                       <td>
+                         Subject :
+                         <select class="form-control" formControlName="subjectsId" class="form-control" [id]="'subject'+i">
+                           <option *ngFor="let items of subjects" [ngValue]="items.codeId">
+                             {{items.Subject}} ({{items.codeId}})</option>
+                         </select>
+                       </td>
+                       <td>
+                         Teacher:
+                         <select class="form-control" formControlName="teachersId" class="form-control"
+                           [id]="'teacher'+i">
+                           <option *ngFor="let items of emp" [ngValue]="items.EmpId">
+                             {{items.firstName}}
+                             {{items.lastName}} ({{items.EmpId}})</option>
+                         </select>
+                       </td>
+                       <td>
+                         Time From:
+                         <input class="form-control" formControlName="timefrom" [ngxTimepicker]="picker">
+                         <ngx-material-timepicker #picker></ngx-material-timepicker>
+                       </td>
+                       <td>
+                         Time To:
+                         <input class="form-control" formControlName="timeTo" [ngxTimepicker]="picker1">
+                         <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                       </td>
+                       <td>
+                         Room No:
+                         <input type="number" formControlName="RoomNo" class="form-control">
+                       </td>
+                       <td>
+                         <button (click)="removeQuantity1(i)" class="btn btn-danger">Remove</button>
+                       </td>
+                     </tr>
+                     <tfoot>
+                       &nbsp;&nbsp; <button [disabled]="!TueForm.dirty" type="submit"
+                         class="btn btn-primary event-btn m-2">
+                         <span *ngIf="this.btnLoader1" class="spinner-border spinner-border-sm" role="status"></span>
+                         <span *ngIf="this.btnLoader1" class="load-text"> Loading...</span>
+                         <span *ngIf="!this.btnLoader1" class="btn-text"><i class="fa fa-refresh"></i> Submit</span>
+                       </button>
+                     </tfoot>
+                   </table>
+
+                 </form>
+             </app-card>
+           </ng-template>
+        </ngb-tab>
+     
+      <ngb-tab title="Wednesday">
+          <ng-template ngbTabContent>
+            <app-card cardTitle="Basic Table" blockClass="table-border-style">
+              <div *ngIf="isShow==true" class="table-responsive">
+                <form #form="ngForm" id="myform" autocomplete="off" (ngSubmit)="SaveTTMon(tttable)">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Subject</th>
+                        <th>Teacher</th>
+                        <th>Time From</th>
+                        <th>Time To</th>
+                        <th>Room No</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- By Adding -->
+                      <tr *ngFor="let item of tttable; let i=index">
+                        <td>
+                          <select [(ngModel)]="item.subjectsId" [name]="'Subject'+i" class="form-control"
+                            #Subject="ngModel" class="form-control" [id]="'subject'+i">
+                            <option *ngFor="let items of subjects" [selected]="items.codeId===item.subjectsId"
+                              [ngValue]="items.codeId">
+                              {{items.Subject}} ({{items.codeId}})</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select [name]="'teacher'+i" #teacher="ngModel" [(ngModel)]="item.teachersId"
+                            class="form-control" [id]="'teacher'+i">
+                            <option *ngFor="let items of emp" [selected]="items.EmpId===item.teachersId"
+                              [ngValue]="items.EmpId">{{items.firstName}}
+                              {{items.lastName}} ({{items.EmpId}})</option>
+                          </select>
+                        </td>
+                        <td> <input [id]="'timefrom'+i" [name]="'timefrom'+i" #timefrom="ngModel"
+                            [(ngModel)]="item.timefrom" [ngxTimepicker]="picker3" type="text" [value]="item.timefrom"
+                            class="form-control" />
+                          <ngx-material-timepicker #picker3></ngx-material-timepicker>
+                        </td>
+                        <td>
+                          <input type="text" [id]="'timeTo'+i" [name]="'timeTo'+i" #timeTo="ngModel"
+                            [(ngModel)]="item.timeTo" class="form-control" [ngxTimepicker]="picker4" />
+                          <ngx-material-timepicker #picker4></ngx-material-timepicker>
+
+                          <input type="hidden" [id]="'WeekDay'+i" name="WeekDay" #WeekDay="ngModel"
+                            [(ngModel)]="item.WeekDay" class="form-control" />
+                        </td>
+                        <td><input type="number" [id]="'RoomNo'+i" [name]="'RoomNo'+i" #RoomNo="ngModel"
+                            [(ngModel)]="item.RoomNo" class="form-control" />
+                        </td>
+                        <td>
+                          <input type="button" class="btn btn-danger" value="Remove" (click)="DeleteSTT(item.Id)" />
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      &nbsp;&nbsp; <button [disabled]="!form.dirty" form="myform" type="submit"
+                        class="btn btn-primary event-btn m-2">
+                        <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+                        <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+                        <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-refresh"></i> Update</span>
+                      </button>
+                    </tfoot>
+                  </table>
+                </form>
+
+              </div>
+              <!-- Adding -->
+              <form [formGroup]="WedForm" (ngSubmit)="onSubmit2()">
+                <table class="table table-bordered" formArrayName="quantities">
+                  <tr>
+                    <th colspan="5">Add Multiple TimeTable:</th>
+                    <th width="150px">
+                      <button style="margin-top: 8px; color: white;" (click)="AddRow2()" class="btn btn-info"
+                        type="button"><i class="fa fa-plus"></i> Add</button>
+                    </th>
+                  </tr>
+                  <tr *ngFor="let quantity of quantities2().controls; let i=index" [formGroupName]="i">
+                    <td>
+                      Subject :
+                      <select class="form-control" formControlName="subjectsId" class="form-control" [id]="'subject'+i">
+                        <option *ngFor="let items of subjects" [ngValue]="items.codeId">
+                          {{items.Subject}} ({{items.codeId}})</option>
+                      </select>
+                    </td>
+                    <td>
+                      Teacher:
+                      <select class="form-control" formControlName="teachersId" class="form-control" [id]="'teacher'+i">
+                        <option *ngFor="let items of emp" [ngValue]="items.EmpId">
+                          {{items.firstName}}
+                          {{items.lastName}} ({{items.EmpId}})</option>
+                      </select>
+                    </td>
+                    <td>
+                      Time From:
+                      <input class="form-control" formControlName="timefrom" [ngxTimepicker]="picker">
+                      <ngx-material-timepicker #picker></ngx-material-timepicker>
+                    </td>
+                    <td>
+                      Time To:
+                      <input class="form-control" formControlName="timeTo" [ngxTimepicker]="picker1">
+                      <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                    </td>
+                    <td>
+                      Room No:
+                      <input type="number" formControlName="RoomNo" class="form-control">
+                    </td>
+                    <td>
+                      <button (click)="removeQuantity2(i)" class="btn btn-danger">Remove</button>
+                    </td>
+                  </tr>
+                  <tfoot>
+                    &nbsp;&nbsp; <button [disabled]="!WedForm.dirty" type="submit"
+                      class="btn btn-primary event-btn m-2">
+                      <span *ngIf="this.btnLoader1" class="spinner-border spinner-border-sm" role="status"></span>
+                      <span *ngIf="this.btnLoader1" class="load-text"> Loading...</span>
+                      <span *ngIf="!this.btnLoader1" class="btn-text"><i class="fa fa-refresh"></i> Submit</span>
+                    </button>
+                  </tfoot>
+                </table>
+
+              </form>
+            </app-card>
+          </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Thrusday">
+          <ng-template ngbTabContent>
+            <app-card cardTitle="Basic Table" blockClass="table-border-style">
+              <div *ngIf="isShow==true" class="table-responsive">
+                <form #form="ngForm" id="myform" autocomplete="off" (ngSubmit)="SaveTTMon(tttable)">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Subject</th>
+                        <th>Teacher</th>
+                        <th>Time From</th>
+                        <th>Time To</th>
+                        <th>Room No</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- By Adding -->
+                      <tr *ngFor="let item of tttable; let i=index">
+                        <td>
+                          <select [(ngModel)]="item.subjectsId" [name]="'Subject'+i" class="form-control"
+                            #Subject="ngModel" class="form-control" [id]="'subject'+i">
+                            <option *ngFor="let items of subjects" [selected]="items.codeId===item.subjectsId"
+                              [ngValue]="items.codeId">
+                              {{items.Subject}} ({{items.codeId}})</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select [name]="'teacher'+i" #teacher="ngModel" [(ngModel)]="item.teachersId"
+                            class="form-control" [id]="'teacher'+i">
+                            <option *ngFor="let items of emp" [selected]="items.EmpId===item.teachersId"
+                              [ngValue]="items.EmpId">{{items.firstName}}
+                              {{items.lastName}} ({{items.EmpId}})</option>
+                          </select>
+                        </td>
+                        <td> <input [id]="'timefrom'+i" [name]="'timefrom'+i" #timefrom="ngModel"
+                            [(ngModel)]="item.timefrom" [ngxTimepicker]="picker3" type="text" [value]="item.timefrom"
+                            class="form-control" />
+                          <ngx-material-timepicker #picker3></ngx-material-timepicker>
+                        </td>
+                        <td>
+                          <input type="text" [id]="'timeTo'+i" [name]="'timeTo'+i" #timeTo="ngModel"
+                            [(ngModel)]="item.timeTo" class="form-control" [ngxTimepicker]="picker4" />
+                          <ngx-material-timepicker #picker4></ngx-material-timepicker>
+
+                          <input type="hidden" [id]="'WeekDay'+i" name="WeekDay" #WeekDay="ngModel"
+                            [(ngModel)]="item.WeekDay" class="form-control" />
+                        </td>
+                        <td><input type="number" [id]="'RoomNo'+i" [name]="'RoomNo'+i" #RoomNo="ngModel"
+                            [(ngModel)]="item.RoomNo" class="form-control" />
+                        </td>
+                        <td>
+                          <input type="button" class="btn btn-danger" value="Remove" (click)="DeleteSTT(item.Id)" />
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      &nbsp;&nbsp; <button [disabled]="!form.dirty" form="myform" type="submit"
+                        class="btn btn-primary event-btn m-2">
+                        <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+                        <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+                        <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-refresh"></i> Update</span>
+                      </button>
+                    </tfoot>
+                  </table>
+                </form>
+
+              </div>
+              <!-- Adding -->
+              <form [formGroup]="ThuForm" (ngSubmit)="onSubmit3()">
+                <table class="table table-bordered" formArrayName="quantities">
+                  <tr>
+                    <th colspan="5">Add Multiple TimeTable:</th>
+                    <th width="150px">
+                      <button style="margin-top: 8px; color: white;" (click)="AddRow3()" class="btn btn-info"
+                        type="button"><i class="fa fa-plus"></i> Add</button>
+                    </th>
+                  </tr>
+                  <tr *ngFor="let quantity of quantities3().controls; let i=index" [formGroupName]="i">
+                    <td>
+                      Subject :
+                      <select class="form-control" formControlName="subjectsId" class="form-control" [id]="'subject'+i">
+                        <option *ngFor="let items of subjects" [ngValue]="items.codeId">
+                          {{items.Subject}} ({{items.codeId}})</option>
+                      </select>
+                    </td>
+                    <td>
+                      Teacher:
+                      <select class="form-control" formControlName="teachersId" class="form-control" [id]="'teacher'+i">
+                        <option *ngFor="let items of emp" [ngValue]="items.EmpId">
+                          {{items.firstName}}
+                          {{items.lastName}} ({{items.EmpId}})</option>
+                      </select>
+                    </td>
+                    <td>
+                      Time From:
+                      <input class="form-control" formControlName="timefrom" [ngxTimepicker]="picker">
+                      <ngx-material-timepicker #picker></ngx-material-timepicker>
+                    </td>
+                    <td>
+                      Time To:
+                      <input class="form-control" formControlName="timeTo" [ngxTimepicker]="picker1">
+                      <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                    </td>
+                    <td>
+                      Room No:
+                      <input type="number" formControlName="RoomNo" class="form-control">
+                    </td>
+                    <td>
+                      <button (click)="removeQuantity3(i)" class="btn btn-danger">Remove</button>
+                    </td>
+                  </tr>
+                  <tfoot>
+                    &nbsp;&nbsp; <button [disabled]="!ThuForm.dirty" type="submit"
+                      class="btn btn-primary event-btn m-2">
+                      <span *ngIf="this.btnLoader1" class="spinner-border spinner-border-sm" role="status"></span>
+                      <span *ngIf="this.btnLoader1" class="load-text"> Loading...</span>
+                      <span *ngIf="!this.btnLoader1" class="btn-text"><i class="fa fa-refresh"></i> Submit</span>
+                    </button>
+                  </tfoot>
+                </table>
+
+              </form>
+            </app-card>
+          </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Friday">
+         <ng-template ngbTabContent>
+           <app-card cardTitle="Basic Table" blockClass="table-border-style">
+             <div *ngIf="isShow==true" class="table-responsive">
+               <form #form="ngForm" id="myform" autocomplete="off" (ngSubmit)="SaveTTMon(tttable)">
+                 <table class="table">
+                   <thead>
+                     <tr>
+                       <th>Subject</th>
+                       <th>Teacher</th>
+                       <th>Time From</th>
+                       <th>Time To</th>
+                       <th>Room No</th>
+                       <th>Action</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <!-- By Adding -->
+                     <tr *ngFor="let item of tttable; let i=index">
+                       <td>
+                         <select [(ngModel)]="item.subjectsId" [name]="'Subject'+i" class="form-control" #Subject="ngModel"
+                           class="form-control" [id]="'subject'+i">
+                           <option *ngFor="let items of subjects" [selected]="items.codeId===item.subjectsId"
+                             [ngValue]="items.codeId">
+                             {{items.Subject}} ({{items.codeId}})</option>
+                         </select>
+                       </td>
+                       <td>
+                         <select [name]="'teacher'+i" #teacher="ngModel" [(ngModel)]="item.teachersId" class="form-control"
+                           [id]="'teacher'+i">
+                           <option *ngFor="let items of emp" [selected]="items.EmpId===item.teachersId"
+                             [ngValue]="items.EmpId">{{items.firstName}}
+                             {{items.lastName}} ({{items.EmpId}})</option>
+                         </select>
+                       </td>
+                       <td> <input [id]="'timefrom'+i" [name]="'timefrom'+i" #timefrom="ngModel"
+                           [(ngModel)]="item.timefrom" [ngxTimepicker]="picker3" type="text" [value]="item.timefrom"
+                           class="form-control" />
+                         <ngx-material-timepicker #picker3></ngx-material-timepicker>
+                       </td>
+                       <td>
+                         <input type="text" [id]="'timeTo'+i" [name]="'timeTo'+i" #timeTo="ngModel"
+                           [(ngModel)]="item.timeTo" class="form-control" [ngxTimepicker]="picker4" />
+                         <ngx-material-timepicker #picker4></ngx-material-timepicker>
+
+                         <input type="hidden" [id]="'WeekDay'+i" name="WeekDay" #WeekDay="ngModel"
+                           [(ngModel)]="item.WeekDay" class="form-control" />
+                       </td>
+                       <td><input type="number" [id]="'RoomNo'+i" [name]="'RoomNo'+i" #RoomNo="ngModel"
+                           [(ngModel)]="item.RoomNo" class="form-control" />
+                       </td>
+                       <td>
+                         <input type="button" class="btn btn-danger" value="Remove" (click)="DeleteSTT(item.Id)" />
+                       </td>
+                     </tr>
+                   </tbody>
+                   <tfoot>
+                     &nbsp;&nbsp; <button [disabled]="!form.dirty" form="myform" type="submit"
+                       class="btn btn-primary event-btn m-2">
+                       <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+                       <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+                       <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-refresh"></i> Update</span>
+                     </button>
+                   </tfoot>
+                 </table>
+               </form>
+
+             </div>
+             <!-- Adding -->
+             <form [formGroup]="FriForm" (ngSubmit)="onSubmit4()">
+               <table class="table table-bordered" formArrayName="quantities">
+                 <tr>
+                   <th colspan="5">Add Multiple TimeTable:</th>
+                   <th width="150px">
+                     <button style="margin-top: 8px; color: white;" (click)="AddRow4()" class="btn btn-info"
+                       type="button"><i class="fa fa-plus"></i> Add</button>
+                   </th>
+                 </tr>
+                 <tr *ngFor="let quantity of quantities4().controls; let i=index" [formGroupName]="i">
+                   <td>
+                     Subject :
+                     <select class="form-control" formControlName="subjectsId" class="form-control" [id]="'subject'+i">
+                       <option *ngFor="let items of subjects" [ngValue]="items.codeId">
+                         {{items.Subject}} ({{items.codeId}})</option>
+                     </select>
+                   </td>
+                   <td>
+                     Teacher:
+                     <select class="form-control" formControlName="teachersId" class="form-control" [id]="'teacher'+i">
+                       <option *ngFor="let items of emp" [ngValue]="items.EmpId">
+                         {{items.firstName}}
+                         {{items.lastName}} ({{items.EmpId}})</option>
+                     </select>
+                   </td>
+                   <td>
+                     Time From:
+                     <input class="form-control" formControlName="timefrom" [ngxTimepicker]="picker">
+                     <ngx-material-timepicker #picker></ngx-material-timepicker>
+                   </td>
+                   <td>
+                     Time To:
+                     <input class="form-control" formControlName="timeTo" [ngxTimepicker]="picker1">
+                     <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                   </td>
+                   <td>
+                     Room No:
+                     <input type="number" formControlName="RoomNo" class="form-control">
+                   </td>
+                   <td>
+                     <button (click)="removeQuantity4(i)" class="btn btn-danger">Remove</button>
+                   </td>
+                 </tr>
+                 <tfoot>
+                   &nbsp;&nbsp; <button [disabled]="!FriForm.dirty" type="submit" class="btn btn-primary event-btn m-2">
+                     <span *ngIf="this.btnLoader1" class="spinner-border spinner-border-sm" role="status"></span>
+                     <span *ngIf="this.btnLoader1" class="load-text"> Loading...</span>
+                     <span *ngIf="!this.btnLoader1" class="btn-text"><i class="fa fa-refresh"></i> Submit</span>
+                   </button>
+                 </tfoot>
+               </table>
+
+             </form>
+           </app-card>
+         </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Saturday">
+           <ng-template ngbTabContent>
+             <app-card cardTitle="Basic Table" blockClass="table-border-style">
+               <div *ngIf="isShow==true" class="table-responsive">
+                 <form #form="ngForm" id="myform" autocomplete="off" (ngSubmit)="SaveTTMon(tttable)">
+                   <table class="table">
+                     <thead>
+                       <tr>
+                         <th>Subject</th>
+                         <th>Teacher</th>
+                         <th>Time From</th>
+                         <th>Time To</th>
+                         <th>Room No</th>
+                         <th>Action</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <!-- By Adding -->
+                       <tr *ngFor="let item of tttable; let i=index">
+                         <td>
+                           <select [(ngModel)]="item.subjectsId" [name]="'Subject'+i" class="form-control"
+                             #Subject="ngModel" class="form-control" [id]="'subject'+i">
+                             <option *ngFor="let items of subjects" [selected]="items.codeId===item.subjectsId"
+                               [ngValue]="items.codeId">
+                               {{items.Subject}} ({{items.codeId}})</option>
+                           </select>
+                         </td>
+                         <td>
+                           <select [name]="'teacher'+i" #teacher="ngModel" [(ngModel)]="item.teachersId"
+                             class="form-control" [id]="'teacher'+i">
+                             <option *ngFor="let items of emp" [selected]="items.EmpId===item.teachersId"
+                               [ngValue]="items.EmpId">{{items.firstName}}
+                               {{items.lastName}} ({{items.EmpId}})</option>
+                           </select>
+                         </td>
+                         <td> <input [id]="'timefrom'+i" [name]="'timefrom'+i" #timefrom="ngModel"
+                             [(ngModel)]="item.timefrom" [ngxTimepicker]="picker3" type="text" [value]="item.timefrom"
+                             class="form-control" />
+                           <ngx-material-timepicker #picker3></ngx-material-timepicker>
+                         </td>
+                         <td>
+                           <input type="text" [id]="'timeTo'+i" [name]="'timeTo'+i" #timeTo="ngModel"
+                             [(ngModel)]="item.timeTo" class="form-control" [ngxTimepicker]="picker4" />
+                           <ngx-material-timepicker #picker4></ngx-material-timepicker>
+
+                           <input type="hidden" [id]="'WeekDay'+i" name="WeekDay" #WeekDay="ngModel"
+                             [(ngModel)]="item.WeekDay" class="form-control" />
+                         </td>
+                         <td><input type="number" [id]="'RoomNo'+i" [name]="'RoomNo'+i" #RoomNo="ngModel"
+                             [(ngModel)]="item.RoomNo" class="form-control" />
+                         </td>
+                         <td>
+                           <input type="button" class="btn btn-danger" value="Remove" (click)="DeleteSTT(item.Id)" />
+                         </td>
+                       </tr>
+                     </tbody>
+                     <tfoot>
+                       &nbsp;&nbsp; <button [disabled]="!form.dirty" form="myform" type="submit"
+                         class="btn btn-primary event-btn m-2">
+                         <span *ngIf="this.btnLoader" class="spinner-border spinner-border-sm" role="status"></span>
+                         <span *ngIf="this.btnLoader" class="load-text"> Loading...</span>
+                         <span *ngIf="!this.btnLoader" class="btn-text"><i class="fa fa-refresh"></i> Update</span>
+                       </button>
+                     </tfoot>
+                   </table>
+                 </form>
+
+               </div>
+               <!-- Adding -->
+               <form [formGroup]="SatForm" (ngSubmit)="onSubmit5()">
+                 <table class="table table-bordered" formArrayName="quantities">
+                   <tr>
+                     <th colspan="5">Add Multiple TimeTable:</th>
+                     <th width="150px">
+                       <button style="margin-top: 8px; color: white;" (click)="AddRow5()" class="btn btn-info"
+                         type="button"><i class="fa fa-plus"></i> Add</button>
+                     </th>
+                   </tr>
+                   <tr *ngFor="let quantity of quantities5().controls; let i=index" [formGroupName]="i">
+                     <td>
+                       Subject :
+                       <select class="form-control" formControlName="subjectsId" class="form-control" [id]="'subject'+i">
+                         <option *ngFor="let items of subjects" [ngValue]="items.codeId">
+                           {{items.Subject}} ({{items.codeId}})</option>
+                       </select>
+                     </td>
+                     <td>
+                       Teacher:
+                       <select class="form-control" formControlName="teachersId" class="form-control"
+                         [id]="'teacher'+i">
+                         <option *ngFor="let items of emp" [ngValue]="items.EmpId">
+                           {{items.firstName}}
+                           {{items.lastName}} ({{items.EmpId}})</option>
+                       </select>
+                     </td>
+                     <td>
+                       Time From:
+                       <input class="form-control" formControlName="timefrom" [ngxTimepicker]="picker">
+                       <ngx-material-timepicker #picker></ngx-material-timepicker>
+                     </td>
+                     <td>
+                       Time To:
+                       <input class="form-control" formControlName="timeTo" [ngxTimepicker]="picker1">
+                       <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                     </td>
+                     <td>
+                       Room No:
+                       <input type="number" formControlName="RoomNo" class="form-control">
+                     </td>
+                     <td>
+                       <button (click)="removeQuantity5(i)" class="btn btn-danger">Remove</button>
+                     </td>
+                   </tr>
+                   <tfoot>
+                     &nbsp;&nbsp; <button [disabled]="!SatForm.dirty" type="submit"
+                       class="btn btn-primary event-btn m-2">
+                       <span *ngIf="this.btnLoader1" class="spinner-border spinner-border-sm" role="status"></span>
+                       <span *ngIf="this.btnLoader1" class="load-text"> Loading...</span>
+                       <span *ngIf="!this.btnLoader1" class="btn-text"><i class="fa fa-refresh"></i> Submit</span>
+                     </button>
+                   </tfoot>
+                 </table>
+
+               </form>
+             </app-card>
+           </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+   
+  </div>
+  </div>

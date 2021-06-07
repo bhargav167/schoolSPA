@@ -1,0 +1,104 @@
+<section class="content">
+  <div class="row">
+
+    <div class="col-md-4">
+      <!-- Horizontal Form -->
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Add Subject Group</h3>
+        </div><!-- /.box-header -->
+        <form id="save" [formGroup]="registerClass" (ngSubmit)="AddSubjectGroup()">
+          <div class="box-body">
+            <div class="form-group">
+              <label>Name</label><small class="req"> *</small>
+              <input formControlName="SubjectName"
+                [ngClass]="{'is-invalid': registerClass.get('SubjectName').errors && registerClass.get('SubjectName').touched}"
+                type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Name">
+              <small id="emailHelp"
+                *ngIf="registerClass.get('SubjectName').hasError('required') &&  registerClass.get('SubjectName').touched"
+                class="invalid-feedback">Please Enter Name</small>
+              <small id="emailHelp"
+                *ngIf="registerClass.get('SubjectName').hasError('maxlength') && registerClass.get('SubjectName').touched"
+                class="invalid-feedback">Please enter valid Name. Too Long</small>
+            </div> 
+          </div><!-- /.box-body -->
+
+        </form> 
+        <div class="box-body">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Class</label>
+            <select (change)='onOptionsSelected($event)' class="form-control" id="exampleFormControlSelect1"> 
+              <option disabled selected>--Select--</option>
+                <option [selected]="editsubjectGrp?.Classes==items.classes" *ngFor="let items of allClasses" [ngValue]="items">{{items.classes}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Sections</label><small class="req"> *</small>
+            <div *ngFor="let item of sections; let i=index" class="checkbox">
+              <label>
+                <input (change)="changeSelection($event)" [checked]="item==ediSections[i] && seccheck==true" type="checkbox" [name]="item" 
+                  [value]="item"> {{item}} </label>
+            </div>
+            <span class="text-danger"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Subject</label><small class="req"> *</small>
+            <div *ngFor="let item of allSubject;let i=index" class="checkbox">
+              <label>
+                <input [checked]="item.isChecked" [(ngModel)]="item.isChecked" (change)="changeSelectionSub($event)" type="checkbox"  
+                  [value]="item.Subject"> {{item.Subject}} </label>
+            </div>
+            <span class="text-danger"></span>
+          </div>
+        </div>
+       
+        <div class="box-footer">
+          <button type="submit" [disabled]="!registerClass.valid" form="save" class="btn btn-info pull-right">Save</button>
+        </div>
+      </div>
+
+    </div> 
+
+    <!-- Subject GroupList -->
+    <div class="col-md-8"> 
+      <div class="box box-primary">
+        <div class="box-header ptbnull">
+          <h3 class="box-title titlefix">Subject Group List's</h3>
+        </div>
+        <div class="box-body">
+          <div class="mailbox-messages">
+            <div class="">
+              <div class="download_label">Subject Group List</div>
+             <table class="table table-stripe">
+               <thead>
+                 <th>SN.No</th>
+                 <th>Name</th>
+                 <th>Class</th>
+                 <th>Section</th>
+                 <th>Subject</th>
+                 <th>Action</th>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let item of subGroupData;let i=index">
+                  <td>{{i+1}}</td>
+                   <td>{{item.SubjectName}}</td>
+                   <td>{{item.Classes}}</td>
+                   <td>{{item.Section}}</td>
+                   <td>{{item.Subject}}</td>
+                   <td>
+                     <button (click)="Edit(item)" type="button" class="btn btn-warning">Edit</button>&nbsp;
+                     <button type="button" (click)="Delete(item.Id)"  class="btn btn-danger">Delete</button>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>

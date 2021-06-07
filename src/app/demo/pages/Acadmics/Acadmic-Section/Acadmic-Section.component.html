@@ -1,0 +1,62 @@
+<section class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Add Section</h3>
+        </div>
+        <form [formGroup]="registerSection" (ngSubmit)="AddSection()">
+          <div class="box-body"> 
+            
+            <div class="form-group">
+              <label>Section</label><small class="req"> *</small>
+              <input formControlName="section" 
+              
+        [ngClass]="{'is-invalid': registerSection.get('section').errors && registerSection.get('section').touched}"
+        type="text" 
+        class="form-control" 
+        id="exampleInputEmail1" aria-describedby="emailHelp" 
+        placeholder="Section">  
+        <small id="emailHelp" *ngIf="registerSection.get('section').hasError('required') &&  registerSection.get('section').touched" class="invalid-feedback">Please Enter Section</small>
+        <small id="emailHelp" *ngIf="registerSection.get('section').hasError('maxlength') && registerSection.get('section').touched" class="invalid-feedback">Please enter valid Session. Too Long</small>
+            </div>
+          </div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-info pull-right">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="box box-primary">
+        <div class="box-header ptbnull">
+          <h3 class="box-title titlefix">Section</h3>
+        </div>
+        <div class="box-body">
+          <div class="mailbox-messages">
+            <div class="">
+              <div class="download_label">Section List</div>
+             <table class="table table-stripe">
+               <thead> 
+                 <th>Sessions</th>
+                 <th>Action</th>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let item of section"> 
+                   <td>{{item.section}}</td> 
+                   <td>
+                     <button (click)="Edit(item)" type="button" class="btn btn-warning">Edit</button>&nbsp;
+                     <button type="button" (click)="DeleteSection(item)" class="btn btn-danger">Delete</button>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

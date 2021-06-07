@@ -1,0 +1,93 @@
+<section class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Assign Class Teacher</h3>
+        </div>
+        <form [formGroup]="saveForm" (submit)="SaveChange()">
+           <div class="box-body">
+             <div class="form-group">
+               <label for="exampleInputEmail1">Class level</label>
+               <select (change)="LevelChange($event)" class="form-control" id="exampleFormControlSelect1">
+                 <option value="-1" [selected]="selected" disabled>--Select--</option>
+                 <option value="1">Junior</option>
+                 <option value="2">Senior</option>
+               </select>
+             </div>
+             <div class="form-group">
+               <label for="exampleInputEmail1">Class</label>
+               <select (change)='onOptionsSelected($event)'  class="form-control"
+                 id="exampleFormControlSelect1">
+                 <option [selected]="selected">--Select--</option>
+                 <option *ngFor="let items of allClasses" [ngValue]="items">{{items.classes}}
+                 </option>
+               </select>
+             </div>
+             <div class="form-group">
+               <label for="exampleInputEmail1">Class Section</label>
+               <select (change)="selectedSec($event)" formControlName="Section" class="form-control"
+                 id="exampleFormControlSelect1">
+                 <option [selected]="selected">--Select--</option>
+                 <option *ngFor="let items of sections">{{items}}</option>
+               </select>
+               <small id="emailHelp" class="invalid-feedback">Please select Section</small>
+             </div>
+             <!-- Select classe teacher -->
+             <p style="font-size: medium;">Class Teacher <span style="color: red;">*</span></p>
+             <div *ngFor="let items of emp" class="form-check">
+               <input class="form-check-input" name="TeacherId" formControlName="TeacherId"
+                 (change)="AssignTeacher(items.firstName,items.lastName)" type="radio"
+                  [value]="items.EmpId" [id]="items.EmpId">
+               <label class="form-check-label" for="defaultCheck1">
+                 {{items.firstName}}
+                 {{items.lastName}} ({{items.EmpId}})
+               </label>
+             </div>
+           </div>
+
+           <div class="box-footer">
+             <button [disabled]="!saveForm.valid" type="submit" class="btn btn-info pull-right">Save</button>
+           </div>
+        </form>
+         
+        
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="box box-primary">
+        <div class="box-header ptbnull">
+          <h3 class="box-title titlefix">Class Teacher List</h3>
+        </div>
+        <div class="box-body">
+          <div class="mailbox-messages">
+            <div class="">
+              <div class="download_label">Teacher List</div>
+              <table class="table table-stripe">
+                <thead>
+                  <th>Class</th>
+                  <th>Section</th>
+                  <th>Class Teacher</th>
+                   <th>Remove</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of classTeacher">
+                    <td>{{item.classe}}</td>
+                     <td>{{item.Section}}</td>
+                     <td>{{item.TeacherName}}</td>
+                     <td>
+                        <button type="button" (click)="deleteClassTeacher(item.Id)"
+                          class="btn btn-danger">Remove</button>
+                     </td>
+                  </tr>
+                </tbody> 
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
